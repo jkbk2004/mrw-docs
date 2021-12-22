@@ -22,7 +22,7 @@ UFS-SRW/MRW Test Runs
    :maxdepth: 2
 
    UFS-SRW workflow application <srwflow>
-   UFS-MRW workflow application <containers>
+   UFS-MRW workflow application <mrwflow>
 
 
 Indices and tables
