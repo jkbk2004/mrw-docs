@@ -1,12 +1,32 @@
-Welcome to Lumache's documentation!
-===================================
+=======================
+EPIC-Documentation Test
+=======================
 
-**Lumache** (/lu'make/) is a Python library for cooks and food lovers that
-creates recipes mixing random ingredients.  It pulls data from the `Open Food
-Facts database <https://world.openfoodfacts.org/>`_ and offers a *simple* and
-*intuitive* API.
+This guide aims to give an introduction to EPIC UFS-SRW/MRW-documentation, brief
+installation instructions, and cover topics relevant to users building and running UFS-SRW/MRW forecast application. More detailed guide will follow on.
 
-.. note::
 
-   This project is under active development.
+HPC-stack and Containers
+========================
 
+.. toctree::
+   :maxdepth: 2
+
+   HPC-stack <containers>
+   Containers <containers>
+
+UFS-SRW/MRW Test Runs
+=====================
+
+.. toctree::
+   :maxdepth: 2
+
+   UFS-SRW forecast application <containers>
+   UFS-MRW forecast application <containers>
+
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`search`
