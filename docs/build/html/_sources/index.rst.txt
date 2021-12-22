@@ -21,8 +21,8 @@ UFS-SRW/MRW Test Runs
 .. toctree::
    :maxdepth: 2
 
-   UFS-SRW forecast application <containers>
-   UFS-MRW forecast application <containers>
+   UFS-SRW workflow application <srwflow>
+   UFS-MRW workflow application <containers>
 
 
 Indices and tables
