@@ -1,0 +1,440 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>HPC-Stack Platforms and Compilers &#8212; EPIC-Documentation 0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Singularity and Docker Containers" href="containers.html" />
+    <link rel="prev" title="EPIC-Documentation Test" href="index.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="containers.html" title="Singularity and Docker Containers"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="EPIC-Documentation Test"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">EPIC-Documentation 0.0.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="hpc-stack-platforms-and-compilers">
+<span id="hpcstack"></span><h1>HPC-Stack Platforms and Compilers<a class="headerlink" href="#hpc-stack-platforms-and-compilers" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="the-hpc-stack">
+<h2>The HPC-Stack<a class="headerlink" href="#the-hpc-stack" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="definition">
+<h3>Definition<a class="headerlink" href="#definition" title="Permalink to this headline">¶</a></h3>
+<p>HPC-stack is a repository that provides a unified, shell script-based
+build system for building the software stack needed for the Unified
+Forecasting System (UFS) and applications. HPC-stack is part of the
+NCEPLIBS project and was written for the Joint Effort for Data
+assimilation Integration (JEDI) framework.</p>
+</div>
+<div class="section" id="how-is-the-hpc-stack-built">
+<h3>How is the HPC-stack built?<a class="headerlink" href="#how-is-the-hpc-stack-built" title="Permalink to this headline">¶</a></h3>
+<p>To build the HPC-stack, all you would need is to have some prerequisites
+installed and to follow three steps.</p>
+<p>The prerequisites for building the HPC-stack are as follows: Lmod,
+CMake, make, wget, curl, and git.</p>
+<p>Building the HPC-stack</p>
+<ol class="arabic simple">
+<li><p>Configure the build</p>
+<ol class="loweralpha simple">
+<li><dl class="simple">
+<dt>In this step, choose the compiler, mpi, and python you would like</dt><dd><p>to use, which is done by editing the config/config_custom.sh
+file.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>The next step is to choose the components of the stack, which is</dt><dd><p>done by editing the stack/stack_custom.yaml file.</p>
+</dd>
+</dl>
+</li>
+</ol>
+</li>
+<li><p>Setting up the compiler, MPI, Python, and Module System</p>
+<ol class="loweralpha simple" start="3">
+<li><dl class="simple">
+<dt>This step is only required if you are using LMod for managing the</dt><dd><p>software stack. If LMod is required, run the setup_modules.sh
+script.</p>
+</dd>
+</dl>
+</li>
+</ol>
+</li>
+<li><p>Build the Software Stack</p>
+<ol class="loweralpha simple" start="4">
+<li><dl class="simple">
+<dt>Lastly, build the stack using the build_stack.sh script. The</dt><dd><p>configuration and yaml files used in Step 1 will be used here.</p>
+</dd>
+</dl>
+</li>
+</ol>
+</li>
+</ol>
+<p>More details on how to build the stack can be found here: <a class="reference external" href="https://github.com/NOAA-EMC/hpc-stack">GitHub -
+NOAA-EMC/hpc-stack: Create a software stack for
+HPC’s</a></p>
+</div>
+</div>
+<div class="section" id="hpc-stack-on-noaa-hpc">
+<h2>HPC-Stack on NOAA HPC<a class="headerlink" href="#hpc-stack-on-noaa-hpc" title="Permalink to this headline">¶</a></h2>
+<p>An operational and a test HPC-stack have been installed on some NOAA
+HPC. Both these stacks are updated a few times a month, with ESMF and
+UPP being the packages that update more frequently than others.</p>
+<p>The HPC-stack test versions are installed on Hera, Jet, Dell, WCOSS2,
+and Orion. The locations of these HPC-stack versions can be found here:
+<a class="reference external" href="https://github.com/NOAA-EMC/hpc-stack/wiki/HPC-stack-test-installations">HPC stack test installations · NOAA-EMC/hpc-stack Wiki ·
+GitHub</a>.</p>
+<p>The official HPC-stack versions are installed on Hera, Orion,
+WCOSS-Dell, Jet, Gaea, Cheyenne, WCOSS-2 (Acorn only). The locations of
+these official HPC-stack can be found here: <a class="reference external" href="https://github.com/NOAA-EMC/hpc-stack/wiki/Official-Installations">Official Installations ·
+NOAA-EMC/hpc-stack Wiki ·
+GitHub</a>.</p>
+</div>
+<div class="section" id="current-testing-of-hpc-stack">
+<h2>Current Testing of HPC-Stack<a class="headerlink" href="#current-testing-of-hpc-stack" title="Permalink to this headline">¶</a></h2>
+<p>The HPC-stack has built-in GitHub Actions to verify if the HPC-stack
+will build successfully using different platforms and compilers. These
+GitHub actions are triggered every time there is a pull request. There
+are four different yaml scripts that test these configurations by
+building the HPC-stack and are found here: <a class="reference external" href="https://github.com/NOAA-EMC/hpc-stack/tree/develop/.github/workflows">hpc-stack/.github/workflows
+at develop · NOAA-EMC/hpc-stack ·
+GitHub</a>.
+An overview of the compiler, mpi, and python versions for the four yaml
+scripts can be found in the table below. Note that the
+test_download_only script only downloads the source code without
+installing it.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Script Name</p></th>
+<th class="head"><p>Platform
+System</p></th>
+<th class="head"><p>Compiler
+(version)</p></th>
+<th class="head"><p>Mpi
+(version)</p></th>
+<th class="head"><p>Python
+version</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>build_intel</p></td>
+<td><p>ubuntu-20.0
+4</p></td>
+<td><p>Intel
+(2021.4.0)</p></td>
+<td><p>Impi
+(2021.4.0)</p></td>
+<td><p>3.8</p></td>
+</tr>
+<tr class="row-odd"><td><p>build_macOS</p></td>
+<td><p>Macos-10.15
+(Catalina)</p></td>
+<td><p>Clang
+(12.0.5)
+(clang)</p></td>
+<td><p>Mpich
+(3.3.2)</p></td>
+<td><p>3.9.6</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td></td>
+<td><p>Clang
+(12.0.5)
+(gcc)</p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>build_ubunt
+u</p></td>
+<td><p>ubuntu-20.0
+4</p></td>
+<td><p>Gnu (9.3.0)</p></td>
+<td><p>Openmpi
+(4.1.1)</p></td>
+<td><p>3.8</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td></td>
+<td></td>
+<td><p>Mpich
+(3.3.2)</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>test_downlo
+ad_only</p></td>
+<td><p>ubuntu-20.0
+4</p></td>
+<td><p>Gnu (9.3.0)</p></td>
+<td><p>Openmpi
+(4.0.1)</p></td>
+<td><p>3.9.4</p></td>
+</tr>
+</tbody>
+</table>
+<p>Both the build_intel and build_ubuntu use the stack_custom.yaml to build
+the HPC-stack, while the build_macOS uses the stack_mac.yaml
+configuration. The packages that are installed for both of these yaml
+files can be found here:
+<a class="reference external" href="https://docs.google.com/spreadsheets/d/122bCY4Mh9LlR8ePTHOYfMI7xZWUtZaDbPH2krA-9Fn0/edit?usp=sharing">hpc-stack_yaml_pkgs</a></p>
+<p>The HPC-stack uses the Intel ‘classic’ compilers (ifort, icc, icpc),
+which are equivalent to the new set of paid compilers. These Intel
+‘classic’ compilers are still free and are a part of the Intel OneAPI
+name.</p>
+</div>
+<div class="section" id="new-platform-and-compiler-testing-of-hpc-stack">
+<h2>New Platform and Compiler Testing of HPC-Stack<a class="headerlink" href="#new-platform-and-compiler-testing-of-hpc-stack" title="Permalink to this headline">¶</a></h2>
+<p>Understanding how the HPC-stack is built on different platforms and
+compilers is crucial to a repeatedly successful and consistent HPC-stack
+build. The table below was created to document the commonly used and/or
+new configurations of platforms, compilers, and library versions the
+HPC-stack builds upon. This table contains a ‘Building Notes’ column
+which will document how each configuration is built and allow for
+comparison and contrast between different configurations.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+<col style="width: 17%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Script
+Name</p></th>
+<th class="head"><p>Platform
+System</p></th>
+<th class="head"><p>Compiler
+(version)</p></th>
+<th class="head"><p>Mpi
+(version)</p></th>
+<th class="head"><p>Python
+version</p></th>
+<th class="head"><p>Building
+Notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="nceplibs-supported-platforms-under-construction">
+<h2>NCEPLIBS Supported Platforms [Under construction]<a class="headerlink" href="#nceplibs-supported-platforms-under-construction" title="Permalink to this headline">¶</a></h2>
+<p>Tier 1 / (Support Level 1) Pre-configured</p>
+<p>Cheyenne</p>
+<p>Hera</p>
+<p>Jet</p>
+<p>Gaea</p>
+<p>All of these systems already have NCEP Libs and NCEP-external pre-built,
+which would suggest that the HPC Stack should run fine on these systems.</p>
+<p>Tier 2 / Support Level 2 | Configurable Platforms</p>
+<p>Stampede2</p>
+<p>Orion</p>
+<p>This tier would require the NCEP libs and NCEP-external packages to be
+built and once these packages are built, the UFS application should run
+successfully. Given that, the HPC-stack should be able to be built on
+these systems.</p>
+<p>Tier 3 / Support Level3 | Limited-Test Platforms</p>
+<p>MacOS Mojave</p>
+<p>MacOS Catalina</p>
+<p>RedHat/CentOS Linux 8.1</p>
+<p>Ubuntu Linux 18.04 LTS</p>
+<p>The systems listed above have all been tested and can build and run the
+MRW application. This would suggest that HPC Stack can be built on these
+systems as well.</p>
+</div>
+<div class="section" id="required-hpc-stack-packages-for-ufs-wm">
+<h2>Required HPC-Stack packages for UFS WM<a class="headerlink" href="#required-hpc-stack-packages-for-ufs-wm" title="Permalink to this headline">¶</a></h2>
+<p>The HPC-stack is a collection of various packages used to address the 8
+UFS Weather Model applications. As a result, there are some packages
+listed in the stack yaml files that aren’t required to build the MRW or
+SRW applications.</p>
+<p>Both the MRW and SRW applications use the UFS WM at it’s core with the
+UFS_UTILS repo. The required packages needed to build the MRW and SRW
+applications can be found in the below table as well as the
+<a class="reference external" href="https://docs.google.com/spreadsheets/d/122bCY4Mh9LlR8ePTHOYfMI7xZWUtZaDbPH2krA-9Fn0/edit?usp=sharing">hpc-stack_yaml_pkgs</a>:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>UFS WM</p></th>
+<th class="head"><p>UFS_UTILS</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>NetCDF (netcdf-fortran, netcdf-c,
+HDF5, (+parallel), zlib)</p></td>
+<td><p>NetCDF 4.3.3</p></td>
+</tr>
+<tr class="row-odd"><td><p>MPI</p></td>
+<td><p>MPI</p></td>
+</tr>
+<tr class="row-even"><td><p>ESMF</p></td>
+<td><p>ESMF 8.0.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>w3nco</p></td>
+<td><p>W3nco 2.4.0</p></td>
+</tr>
+<tr class="row-even"><td><p>Bacio</p></td>
+<td><p>Bacio 2.4.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>sp</p></td>
+<td><p>Sp 2.3.3</p></td>
+</tr>
+<tr class="row-even"><td><p>FMS (R4|R8)</p></td>
+<td><p>Sfcio 1.4.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>Python3</p></td>
+<td><p>Nemsio 2.5.0</p></td>
+</tr>
+<tr class="row-even"><td><p>UPP (optional)</p></td>
+<td><p>Sigio 2.3.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>PIO (optional)</p></td>
+<td><p>Ip 3.3.3</p></td>
+</tr>
+<tr class="row-even"><td><p>OpenMP (optional)</p></td>
+<td><p>G2 3.4.0</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>Wgrib2 2.0.8</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>Doxygen (optional)</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>OpenMP (optional)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="note-for-hpc-stack-build-on-orion-develop-branch">
+<h2>Note for hpc-stack build on Orion: develop branch<a class="headerlink" href="#note-for-hpc-stack-build-on-orion-develop-branch" title="Permalink to this headline">¶</a></h2>
+<p>1. BUILD: NO or wget option of –no-check-certificate for madis pkg :
+due to expired data certification</p>
+<p>2. default miniconda3 installation option in stack_noaa.yaml: possible
+conflict of conda environment setting with user’s local conda
+configuration .condarc (restricted conda channels, etc.)</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">HPC-Stack Platforms and Compilers</a><ul>
+<li><a class="reference internal" href="#the-hpc-stack">The HPC-Stack</a><ul>
+<li><a class="reference internal" href="#definition">Definition</a></li>
+<li><a class="reference internal" href="#how-is-the-hpc-stack-built">How is the HPC-stack built?</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#hpc-stack-on-noaa-hpc">HPC-Stack on NOAA HPC</a></li>
+<li><a class="reference internal" href="#current-testing-of-hpc-stack">Current Testing of HPC-Stack</a></li>
+<li><a class="reference internal" href="#new-platform-and-compiler-testing-of-hpc-stack">New Platform and Compiler Testing of HPC-Stack</a></li>
+<li><a class="reference internal" href="#nceplibs-supported-platforms-under-construction">NCEPLIBS Supported Platforms [Under construction]</a></li>
+<li><a class="reference internal" href="#required-hpc-stack-packages-for-ufs-wm">Required HPC-Stack packages for UFS WM</a></li>
+<li><a class="reference internal" href="#note-for-hpc-stack-build-on-orion-develop-branch">Note for hpc-stack build on Orion: develop branch</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">EPIC-Documentation Test</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="containers.html"
+                        title="next chapter">Singularity and Docker Containers</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/hpcstack.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="containers.html" title="Singularity and Docker Containers"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="EPIC-Documentation Test"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">EPIC-Documentation 0.0.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, ??? ???.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.0.
+    </div>
+  </body>
+</html>
