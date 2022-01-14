@@ -15,14 +15,22 @@ HPC-stack and Containers
    HPC-stack <hpcstack>
    Containers <containers>
 
-UFS-SRW/MRW Test Runs
-=====================
+UFS SRW workflow 
+=================
 
 .. toctree::
    :maxdepth: 2
 
-   UFS-SRW workflow application <srwflow>
-   UFS-MRW workflow application <mrwflow>
+   UFS-SRW application workflow <srwflow>
+
+
+UFS MRW workflow 
+================
+
+.. toctree::
+   :maxdepth: 2
+
+   UFS-MRW application workflow <mrwflow>
 
 
 Indices and tables
