@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>SRW Container Workflow &#8212; EPIC-Documentation 0.0.1 documentation</title>
+    <title>Introduction &#8212; EPIC-Documentation 0.0.1 documentation</title>
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
@@ -16,6 +16,7 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="MRW Container Workflow" href="mrwflow.html" />
     <link rel="prev" title="Singularity and Docker Containers" href="containers.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -24,6 +25,9 @@
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="mrwflow.html" title="MRW Container Workflow"
+             accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="containers.html" title="Singularity and Docker Containers"
              accesskey="P">previous</a> |</li>
@@ -36,158 +40,168 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="srw-container-workflow">
-<span id="srwflow"></span><h1>SRW Container Workflow<a class="headerlink" href="#srw-container-workflow" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="overview">
-<h2><strong>Overview</strong><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
-<p>As part of the Advance User Support Sprint 2 Planning deliverables, a minimalistic containerized version of the Unified Forecasting System (UFS) Short Range Weather (SRW) application was requested.</p>
-<p>There are a number of acceptance criteria set for this deliverable and as a result the containerized version of the SRW application would need to run on a high performance computer (HPC). As with the Medium Range Weather application a low resolution dataset with a shortened forecast period (12 hrs) was used.</p>
-<p>Because the SRW weather application needs to run on a HPC, the end user would need to have access to a NOAA HPC. In our case, we had access to Orion. And in this example, only a Singularity container was proved which had the SRW application pre-installed and built using the HPC-Stack repository.</p>
-<p>This document will aid novice users in running the UFS SRW application with the intent of helping them become more familiar with the UFS and its applications. The document is broken into different sections so that it is easier for a user to understand what is required to run the SRW Container. The container itself is currently a proof of concept and significant work remains to ensure that the process of building containers that are offered to the community are fully in sync with the UFS software in use on the cloud and Tier-1 platforms.</p>
+  <div class="section" id="introduction">
+<span id="code-examples"></span><h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
+<p id="index-0">The Short Range Weather (SRW) Application is one of the many configurations of the Unified Forecasting System (<a class="reference external" href="https://ufs-weather-model.readthedocs.io/en/ufs-v2.0.0/">UFS</a>), which is a community-based, coupled, comprehensive Earth modeling system. The UFS is an open-sourced project made available to the public and researchers, and is the future forecasting suite for NOAA’s operational numerical weather prediction applications.</p>
+<p>As mentioned earlier, the UFS can be configured into <a class="reference external" href="https://ufscommunity.org/science/aboutapps/">multiple applications</a>, and this document describes the SRW Application, which predicts atmospheric behavior on a limited spatial domain with time scales from less than an hour to several days. The SRW Application consists of a prognostic atmospheric model, pre and post processing, and community workflow. Future work is to include data assimilation and verification packages as part of the workflow.</p>
+<p>This document will expound on each piece of the SRW Application as well as discuss the workflow for the containerized SRW Application.</p>
+<div class="section" id="pre-processor-utilities-and-initial-conditions">
+<h2>Pre-processor Utilities and Initial Conditions<a class="headerlink" href="#pre-processor-utilities-and-initial-conditions" title="Permalink to this headline">¶</a></h2>
+<p>There are a number of pre-processing utilities to initialize for model integration. For example, the regional grid, orography, and surface climatology files are required to be generated first before the limited area model. Chgres_cube, a pre-processing software, is used to convert external raw model data into initial and lateral boundary conditions, which are saved as netCDF format that are then used as input files to the forecast model. More information about the UFS pre-processor utilities can be found <a class="reference external" href="https://noaa-emcufs-utils.readthedocs.io/en/ufs-v2.0.0/">here</a>.</p>
 </div>
+<div class="section" id="forecast-model">
+<h2>Forecast Model<a class="headerlink" href="#forecast-model" title="Permalink to this headline">¶</a></h2>
+<p>The Finite-Volume Cubed-Sphere (<a class="reference external" href="https://noaa-emc.github.io/FV3_Dycore_ufs-v2.0.0/html/index.html">FV3</a>) dynamic core LAM configured is the prognostic atmospheric model in the UFS SRW Application. Currently, there are three supported model resolutions (3, 13, and 25-km) for the SRW with 64 vertical levels. The Extended Schmidt Gnomonic (ESG) grid uses FV3-LAM because it displays relatively uniform grid cells across the domain.</p>
+<p>The Common Community Physics Package (<a class="reference external" href="https://dtcenter.org/community-code/common-community-physics-package-ccpp">CCPP</a>) are packages used by the model that describe small-scale physics like clouds and radiations. There are two CCPP packages currently being worked on: the Rapid Refresh Forecast System (RRFS) and the Global Forecast System (GFS). A scientific description of the CCPP parameterizations and suites can be found <a class="reference external" href="https://dtcenter.ucar.edu/GMTB/v5.0.0/sci_doc/index.html">here</a>.</p>
+<p>Both GRIB2 and NEMSIO are acceptable input data for the SRW app. The UFS Weather Model ingests initial and lateral boundary conditions files produced by chgres_cube and output files in NetCDF format to specific projections.</p>
+</div>
+<div class="section" id="post-processor">
+<h2>Post-processor<a class="headerlink" href="#post-processor" title="Permalink to this headline">¶</a></h2>
+<p>The Unified Post Processor is part of the workflow for the SRW Application, and converts the NetCDF output to GRIB2 format. These newly converted files can be used to visualize, plot, and verify the weather model output. Learn more about UPP <a class="reference external" href="https://upp.readthedocs.io/en/upp-v9.0.0/">here</a>.</p>
+</div>
+<div class="section" id="visualization">
+<h2>Visualization<a class="headerlink" href="#visualization" title="Permalink to this headline">¶</a></h2>
+<p>A python script is used to generate simple visualizations for the SRW Application. This visualization script is part of the regional_workflow and is used to help users ensure the application is producing reasonable results. The script can output about a dozen different weather variables as well as do a comparison between two runs if both have the same domain and resolution.</p>
+</div>
+<div class="section" id="build-system-and-workflow">
+<h2>Build System and Workflow<a class="headerlink" href="#build-system-and-workflow" title="Permalink to this headline">¶</a></h2>
+<p>A CMake-based build system is used to build the required components for running the end-to-end SRW Application, which include the pre and post processing software and UFS WM but not the <a class="reference external" href="https://ufs-srweather-app.readthedocs.io/en/ufs-v1.0.1/Glossary.html#term-nceplibs-external">NCEPLIBS-external</a> and <a class="reference external" href="https://ufs-srweather-app.readthedocs.io/en/ufs-v1.0.1/Glossary.html#term-nceplibs">NCEPLIBS</a> packages. Both NCEPLIBS packages are necessary to build the UFS WM and are preinstalled on some <a class="reference external" href="https://github.com/ufs-community/ufs-srweather-app/wiki/Supported-Platforms-and-Compilers">NOAA HPC machines</a>. In the case of the containerized SRW Application, the model is already built.</p>
+<p>Once the SRW Application is built, an experiment generator script can be used to create a Rocoto-based workflow that runs each task in the system in the proper sequence. If the Rocoto software isn’t present on the platform, the components of running the SRW Application can be run individually.</p>
+</div>
+</div>
+<div class="section" id="containerized-srw-application">
+<h1>Containerized SRW Application<a class="headerlink" href="#containerized-srw-application" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>Containerization offers a lot of advantages like ease of portability to on-prem or cloud platforms, ensuring consistent and efficient builds, and faster development cycles, just to name a few. An advantage specific to this project is that a containerized SRW Application allows users to run test cases on the model quickly and efficiently without worrying about the SRW Application failing. This should allow the users to easily learn and quickly become more comfortable with the SRW Application by removing the requirement to build the SRW Application itself.</p>
+<p>A sample case was created for the containerized SRW Application and the instructions to run said case can be found in the following sections. It should be noted that refinement of the containerized SRW Application is anticipated as this project is still considered a proof of concept.</p>
+</div>
+<div class="section" id="container-type">
+<h2>Container Type<a class="headerlink" href="#container-type" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="https://www.google.com/url?sa=t&amp;rct=j&amp;q=&amp;esrc=s&amp;source=web&amp;cd=&amp;cad=rja&amp;uact=8&amp;ved=2ahUKEwicleXLoZj1AhVKnGoFHTfMAhMQFnoECAMQAQ&amp;url=https%3A%2F%2Fwww.docker.com%2Fresources%2Fwhat-container&amp;usg=AOvVaw010ad-skRSEl9ymUmyidiy">Docker</a> is one of the most recognized container software companies used by many in the industry. Which is why the current SRW Application (ufs-v1.0.1) includes <a class="reference external" href="https://ufs-srweather-app.readthedocs.io/en/ufs-v1.0.1/Docker.html">documentation</a> on how to run the model in Docker. But working with Docker can provide additional security risks if not used correctly. Because of this, <a class="reference external" href="https://sylabs.io/guides/3.5/user-guide/introduction.html">Singularity</a> containers were used for this project. Singularity is a crowd-supported container software company that specializes in running containers on High Performance Computing (HPC) platforms and includes additional security measures.</p>
+</div>
+<div class="section" id="sample-case-workflow">
+<h2>Sample Case Workflow<a class="headerlink" href="#sample-case-workflow" title="Permalink to this headline">¶</a></h2>
+<p>As mentioned earlier the containerized SRW Application is in a proof of concept state. Meaning the workflow isn’t as elegant as it could be and contains a lot of manual steps. Therefore, users should be comfortable running basic linux commands like declaring variables, copying directories, and modifying scripts. More development is expected on the workflow like using scripts to automate tasks, which should result in a more enjoyable user experience.</p>
+<p>The current sample case can only be performed on Orion, a NOAA HPC machine, at the moment. However, it is anticipated that the containerized SRW Application will run on more platforms including on-prem and cloud platforms in the future.</p>
+<p>Users that run the workflow will need some prerequisites in order to run the sample case. At the present time, the sample case is quite simple. As it will have users set up and run the SRW Application inside of a singularity container. Unfortunately, there are no visualizations tools like ncviewer and wgrib2 within the container but these tools are expected to be added in future releases.</p>
+<p>With no issues, the sample case workflow can be completed in about an hour. The workflow runs the SRW Application on the RRFS_CONUS_25km grid, with initial GFS ICS and LBCS at 0.25 degree resolution (found locally on Orion) at a forecast length of 12 hours. The most recent release of the SRW Application (ufs-v1.0.1) was used in this sample case.</p>
 <div class="section" id="prerequisites">
-<h2><strong>Prerequisites</strong>:<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h2>
-<p>There are a couple of things one must have before running the SRW application container. Below is a list of these items:</p>
+<h3>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h3>
+<p>The following items are needed to run the containerized SRW Application:</p>
 <ul class="simple">
-<li><p>Access to Orion (this workflow will only work on Orion as this is where the data is hosted)</p></li>
-<li><p>The SRW Singularity image</p></li>
-<li><p>Workflow instructions (found in this document under the Running the Workflow section)</p></li>
+<li><p>Access to <a class="reference external" href="https://www.noaa.gov/organization/information-technology/orion">Orion</a>: Those on the EPIC project received access to Orion shortly after receiving our NOAA card/credentials. Once approved, you’ll have write access to the epic project (epic-ps), which will allow you to create your work directory (i.e. username) if it isn’t already there.</p></li>
+<li><p>The SRW Application Singularity image built from <a class="reference external" href="https://hub.docker.com/r/noaaepic/ubuntu20.04-epic-srwapp">Docker</a></p></li>
+<li><p>Workflow instructions (found in the next section)</p></li>
 </ul>
 </div>
-<div class="section" id="running-the-workflow">
-<h2><strong>Running the Workflow</strong>:<a class="headerlink" href="#running-the-workflow" title="Permalink to this headline">¶</a></h2>
-<p>Once you have the proper access to the Orion HPC, you may run this workflow below.</p>
-<ol class="arabic">
-<li><p>Log into Orion using the command below using your username:</p>
-<blockquote>
-<div><ol class="arabic simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">ssh</span> <span class="pre">-x</span> <span class="pre">username&#64;Orion-login.hpc.msstate.edu</span></code></p></li>
-</ol>
-</div></blockquote>
+<div class="section" id="running-the-sample-case-workflow">
+<h3>Running the Sample Case Workflow<a class="headerlink" href="#running-the-sample-case-workflow" title="Permalink to this headline">¶</a></h3>
+<p>The Sample Case Workflow has been broken down into three sections:</p>
+<ul class="simple">
+<li><p>Orion and Singularity Setup</p></li>
+<li><p>Work Env and Conda Setup</p></li>
+<li><p>Preparing and Running the Workflow</p></li>
+</ul>
+<p>Orion and Singularity Setup:</p>
+<ul>
+<li><p>Log into Orion using the command below with your username:</p>
+<div class="highlight-rest notranslate"><div class="highlight"><pre><span></span>ssh -x username@Orion-login.hpc.msstate.edu
+Note: username is first initial followed by last name, example: John Smith’s username is jsmith
+</pre></div>
+</div>
 </li>
-<li><p>Run the following commands to download the SRW Singularity Image and convert it to a sandbox.</p>
-<blockquote>
-<div><ol class="arabic">
-<li><p><code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">/work/noaa/epic-ps/$USER</span></code></p>
-<blockquote>
-<div><ol class="arabic simple">
-<li><p>NOTE: if your $USER doesn’t exist, you may create it by replacing the ‘cd’ with ‘mkdir -p’ in the command above.</p></li>
-</ol>
-</div></blockquote>
+<li><p>Once on the machine, run the following commands below to download the SRW Application Singularity Image from Docker and convert it to a Singularity sandbox:</p>
+<div class="highlight-rest notranslate"><div class="highlight"><pre><span></span>cd /work/noaa/epic-ps/$USER
+Note: if your $USER doesn’t exist, you may create it by replacing the ‘cd’ with ‘mkdir -p’ in the command above. $USER is the same username used in the previous step.
+module load singularity
+singularity pull ubuntu20.04-epic-srwapp.sif docker://noaaepic/ubuntu20.04-epic-srwapp:latest
+Note: if you run out of space downloading the docker image, you can create a symbolic link of the singularity module from your home directory to the work directory by doing the following:
+      cd /home/$USER
+      mv .singularity /work/noaa/epic-ps/$USER
+      ln -s /work/noaa/epic-ps/esnyder/.singularity .
+singularity build --sandbox ubuntu20.04-epic-srwapp ubuntu20.04-epic-srwapp.sif
+</pre></div>
+</div>
 </li>
-<li><p><code class="docutils literal notranslate"><span class="pre">module</span> <span class="pre">load</span> <span class="pre">singularity</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">singularity</span> <span class="pre">pull</span> <span class="pre">library://dcvelobrew/default/ubuntu-hpc-stack:latest</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">singularity</span> <span class="pre">build</span> <span class="pre">--sandbox</span> <span class="pre">ubuntu-hpc-stack-src</span> <span class="pre">./ubuntu-hpc-stack_latest.sif</span></code></p></li>
-</ol>
-</div></blockquote>
+<li><p>After the Singularity sandbox is complete, run the following commands to obtain a Slurm job allocation from Orion so that the SRW Application can run. Please note, depending on <em>Orion workload status</em>, allocating resources for this project can take minutes to an hour to complete. More on what the salloc command does is found <a class="reference external" href="https://slurm.schedmd.com/salloc.html">here</a>:</p>
+<div class="highlight-rest notranslate"><div class="highlight"><pre><span></span>salloc -N 1 -n 40 -A epic-ps -q batch -t 2:30:00 --partition=orion
+</pre></div>
+</div>
 </li>
-<li><p>After the Singularity sandbox is complete, run the following commands to partition resources from Orion so that the SRW forecast application can run. NOTE: this process can take up to two hours to complete!</p>
-<blockquote>
-<div><ol class="arabic simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">salloc</span> <span class="pre">-N</span> <span class="pre">1</span> <span class="pre">-n</span> <span class="pre">40</span> <span class="pre">-A</span> <span class="pre">epic-ps</span> <span class="pre">-q</span> <span class="pre">batch</span> <span class="pre">-t</span> <span class="pre">2:30:00</span> <span class="pre">--partition=orion</span></code></p></li>
-</ol>
-</div></blockquote>
+<li><p>Run the command below to check if any resources have been assigned:</p>
+<div class="highlight-rest notranslate"><div class="highlight"><pre><span></span>squeue -u $USER
+Note: if resources have been assigned, the output will look something like this:
+      JOBID   PARTITION NAME USER   ST TIME    NODES NODELIST(REASON)
+      3500248 orion bash     jsmith R  1:22:27 1     Orion-23-03
+</pre></div>
+</div>
 </li>
-<li><p>Run the command below to check if any resources have been assigned to your user.</p>
-<blockquote>
-<div><ol class="arabic">
-<li><p><code class="docutils literal notranslate"><span class="pre">squeue</span> <span class="pre">-u</span> <span class="pre">$USER</span></code></p>
-<blockquote>
-<div><ol class="arabic simple">
-<li><p>If resources have been assigned to your user the output will look something like this:</p></li>
-</ol>
-</div></blockquote>
+<li><p>Once resources have been allocated, ssh into the allocated compute node but note that the compute node has no access to the internet:</p>
+<div class="highlight-rest notranslate"><div class="highlight"><pre><span></span>ssh Orion-##-##
+Note: in the example above, the command would be: ssh Orion-23-03.
+</pre></div>
+</div>
 </li>
-</ol>
-</div></blockquote>
+</ul>
+<p>Work Env and Conda Setup:</p>
+<ul>
+<li><p>After you are logged into the compute node, run the following commands to set up Singularity sandbox and work environments:</p>
+<div class="highlight-rest notranslate"><div class="highlight"><pre><span></span>module load singularity
+cd /work/noaa/epic-ps/$USER
+cp ~/.bashrc .
+singularity shell -e --bind /work:/work -w ./ubuntu20.04-epic-srwapp
+Note: in the example above, Orion /work directory is mounted in the container. You may need to create /work directory inside the conainer sandbox.
+source .bashrc
+Note: if you experience trouble sourcing variables feel free to use the bashrc script found in ufs-srweather-app/docs repo.
+</pre></div>
+</div>
 </li>
-</ol>
-<p><code class="docutils literal notranslate"><span class="pre">JOBID</span> <span class="pre">PARTITION</span>&#160;&#160;&#160;&#160; <span class="pre">NAME</span>&#160;&#160;&#160;&#160; <span class="pre">USER</span> <span class="pre">ST</span>&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">TIME</span>&#160; <span class="pre">NODES</span> <span class="pre">NODELIST(REASON)</span></code></p>
-<p><code class="docutils literal notranslate"><span class="pre">3500248</span>&#160;&#160;&#160;&#160; <span class="pre">orion</span>&#160;&#160;&#160;&#160; <span class="pre">bash</span>&#160; <span class="pre">esnyder</span>&#160; <span class="pre">R</span>&#160;&#160;&#160; <span class="pre">1:22:27</span>&#160;&#160;&#160;&#160;&#160; <span class="pre">1</span> <span class="pre">Orion-23-03</span></code></p>
-<ol class="arabic" start="5">
-<li><p>Once resources have been allocated to your user, use the NODELIST to ssh into your node. Note, the node won’t have any connectivity to the internet.</p>
-<blockquote>
-<div><ol class="arabic">
-<li><p><code class="docutils literal notranslate"><span class="pre">ssh</span> <span class="pre">Orion-##-##</span></code></p>
-<blockquote>
-<div><ol class="arabic simple">
-<li><p>In the example above, the command would be: ssh Orion-23-03</p></li>
-</ol>
-</div></blockquote>
+<li><p>Now that your Singularity and work environments are setup, let’s setup the Conda environment for Orion by running the following commands:</p>
+<div class="highlight-rest notranslate"><div class="highlight"><pre><span></span>source /ubuntu20.04-epic-srwapp/opt/ufs-srweather-app/env/wflow_orion_gnu.env
+source /ubuntu20.04-epic-srwapp/opt/ufs-srweather-app/env/build_orion_gnu.env
+cp -rf /ubuntu20.04-epic-srwapp/opt/bin /ubuntu20.04-epic-srwapp/opt/ufs-srweather-app
+</pre></div>
+</div>
 </li>
-</ol>
-</div></blockquote>
+</ul>
+<p>Preparing and Running the Workflow</p>
+<ul>
+<li><p>Navigate to the ush directory, by running the command below:</p>
+<div class="highlight-rest notranslate"><div class="highlight"><pre><span></span>cd /ubuntu20.04-epic-srwapp/opt/ufs-srweather-app/regional_workflow/ush
+</pre></div>
+</div>
 </li>
-<li><p>When you are on the Node run the following commands that will setup your environment so that you can run the Singularity container</p>
-<blockquote>
-<div><ol class="arabic simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">module</span> <span class="pre">load</span> <span class="pre">singularity</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">/work/noaa/epic-ps/$USER</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">cp</span> <span class="pre">~/.bashrc</span> <span class="pre">.</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">singularity</span> <span class="pre">shell</span> <span class="pre">-H</span> <span class="pre">$PWD:$PWD</span> <span class="pre">-B</span> <span class="pre">/work:/work</span> <span class="pre">-w</span> <span class="pre">./ubuntu-hpc-stack-src</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">bash</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">export</span> <span class="pre">PATH=$PATH:/home/builder/opt/bin:/home/builder/opt/miniconda/bin</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">init</span> <span class="pre">bash</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">exit</span></code></p></li>
-</ol>
-</div></blockquote>
+<li><p>Verify if the config shell script is accurate by comparing it to <code class="docutils literal notranslate"><span class="pre">config.sh</span></code> found in the ufs-srweather-app/docs repo. Note that the experiment directory <code class="docutils literal notranslate"><span class="pre">EXPT_SUBDIR</span></code> variable in the config file is where the UFS Weather Model output files will be written to. The experiment directory default value is <code class="docutils literal notranslate"><span class="pre">community</span></code> and can be modified by the user:</p>
+<div class="highlight-rest notranslate"><div class="highlight"><pre><span></span>vi config.sh
+Note: if config file is missing, simply copy the one from ufs-srweather-app/docs repo by doing the following:
+      vi config.sh
+      press ‘i’
+      Copy contents of the config.sh file on ufs-srweather-app/docs repo
+      right click in the terminal window (this should paste the contents of the file here).
+      Press ‘esc’
+      Type :x
+      Hit enter
+</pre></div>
+</div>
 </li>
-<li><p>Now that your Singularity environment is setup, let’s configure the setup for the SRW now by running the following commands:</p>
-<blockquote>
-<div><ol class="arabic simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">Bash</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">export</span> <span class="pre">PATH=$PATH:/home/builder/opt/bin:/home/builder/opt/miniconda/bin</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">export</span> <span class="pre">PATH=$PATH:/home/builder/opt/bin</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">activate</span> <span class="pre">regional_workflow</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">/home/builder/ufs/ufs-srweather-app/regional_workflow/ush</span></code></p></li>
-</ol>
-</div></blockquote>
+<li><p>To ensure the model can run on Orion, replace the ‘srun’ command with ‘mpirun -np 12’ command for the following scripts: exregional_make_sfc_climo.sh, exregional_make_ics.sh, exregional_make_lbcs.sh, and exregional_run_fcst.sh:</p>
+<div class="highlight-rest notranslate"><div class="highlight"><pre><span></span>vi /ubuntu20.04-epic-srwapp/opt/ufs-srweather-app/regional_workflow/scripts/exregional_make_sfc_climo.sh
+Search for ORION by doing: /ORION
+Enter interactive mode: ‘i’ and replace ARN var from ‘srun’ to ‘mpirun -np 12’
+Save the file using ‘esc’, ‘:x’
+Repeat this process for the three remaining shell scripts
+</pre></div>
+</div>
 </li>
-<li><p>In the ush directory, you can modify your EXPT_SUBDIR in the config.sh. This is the experiment directory, where the UFS Weather Model output files will be written to. To modify this directory run this command:</p>
-<blockquote>
-<div><ol class="arabic simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">vi</span> <span class="pre">config.sh</span></code></p></li>
-</ol>
-</div></blockquote>
+<li><p>Now you are ready to run the SRW Application workflow. The workflow has been broken down into individual scripts. More information on what each of these scripts do, can be found <a class="reference external" href="https://ufs-srweather-app.readthedocs.io/en/ufs-v1.0.1/SRWAppOverview.html#description-of-workflow-tasks">here</a>. Please run the following scripts in order.:</p>
+<div class="highlight-rest notranslate"><div class="highlight"><pre><span></span>./run_get_ics.sh
+Note: fetch external data for initial conditions based on the case cycle (Estimated run time: &lt; 1 min). A successful execution of the script looks like this:
+</pre></div>
+</div>
 </li>
-<li><p>After the EXPT_SUBDIR field has been modified in the config.sh file, generate the workflow by doing the following:</p>
-<blockquote>
-<div><ol class="arabic">
-<li><p><code class="docutils literal notranslate"><span class="pre">./generate_FV3LAM_wflow.sh</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">/home/builder/ufs/expt_dirs/EXPT_SUBDIR</span></code></p>
-<blockquote>
-<div><ol class="arabic simple">
-<li><p>NOTE: EXPT_SUBDIR is the field set in the config.sh from the previous step.</p></li>
-</ol>
-</div></blockquote>
-</li>
-<li><p><code class="docutils literal notranslate"><span class="pre">cp</span> <span class="pre">/home/builder/ufs/ufs-srweather-app/regional_workflow/ush/wrappers/*</span> <span class="pre">.</span></code></p></li>
-</ol>
-<ol class="loweralpha simple" start="4">
-<li><p><code class="docutils literal notranslate"><span class="pre">export</span> <span class="pre">EXPTDIR=$PWD</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">source</span> <span class="pre">./var_defns.sh</span></code></p></li>
-</ol>
-</div></blockquote>
-</li>
-<li><p>Now you are ready to run the SRW forecast application workflow. The workflow has been broken down into individual scripts. Please run these scripts in order.</p>
-<ol class="loweralpha simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">./run_get_ics.sh</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">./run_get_lbcs.sh</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">./run_make_grid.sh</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">./run_make_orog.sh</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">./run_make_sfc_climo.sh</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">./run_make_ics.sh</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">./run_make_lbcs.sh</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">./run_fcst.sh</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">./run_post.sh</span></code></p></li>
-</ol>
-</li>
-<li><p>Resulting Output</p>
-<ol class="loweralpha simple">
-<li><p>The final output should look something like this. And the SRW weather model files can be found here:</p></li>
-</ol>
-</li>
-</ol>
+</ul>
+</div>
 </div>
 </div>
 
@@ -199,10 +213,22 @@
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">SRW Container Workflow</a><ul>
-<li><a class="reference internal" href="#overview"><strong>Overview</strong></a></li>
-<li><a class="reference internal" href="#prerequisites"><strong>Prerequisites</strong>:</a></li>
-<li><a class="reference internal" href="#running-the-workflow"><strong>Running the Workflow</strong>:</a></li>
+<li><a class="reference internal" href="#">Introduction</a><ul>
+<li><a class="reference internal" href="#pre-processor-utilities-and-initial-conditions">Pre-processor Utilities and Initial Conditions</a></li>
+<li><a class="reference internal" href="#forecast-model">Forecast Model</a></li>
+<li><a class="reference internal" href="#post-processor">Post-processor</a></li>
+<li><a class="reference internal" href="#visualization">Visualization</a></li>
+<li><a class="reference internal" href="#build-system-and-workflow">Build System and Workflow</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#containerized-srw-application">Containerized SRW Application</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#container-type">Container Type</a></li>
+<li><a class="reference internal" href="#sample-case-workflow">Sample Case Workflow</a><ul>
+<li><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
+<li><a class="reference internal" href="#running-the-sample-case-workflow">Running the Sample Case Workflow</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -210,6 +236,9 @@
   <h4>Previous topic</h4>
   <p class="topless"><a href="containers.html"
                         title="previous chapter">Singularity and Docker Containers</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="mrwflow.html"
+                        title="next chapter">MRW Container Workflow</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -237,6 +266,9 @@
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              >index</a></li>
+        <li class="right" >
+          <a href="mrwflow.html" title="MRW Container Workflow"
+             >next</a> |</li>
         <li class="right" >
           <a href="containers.html" title="Singularity and Docker Containers"
              >previous</a> |</li>

@@ -16,7 +16,7 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Singularity and Docker Containers" href="containers.html" /> 
+    <link rel="next" title="HPC-Stack Platforms and Compilers" href="hpcstack.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -25,7 +25,7 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="containers.html" title="Singularity and Docker Containers"
+          <a href="hpcstack.html" title="HPC-Stack Platforms and Compilers"
              accesskey="N">next</a> |</li>
         <li class="nav-item nav-item-0"><a href="#">EPIC-Documentation 0.0.1 documentation</a> &#187;</li> 
       </ul>
@@ -44,22 +44,46 @@ installation instructions, and cover topics relevant to users building and runni
 <h2>HPC-stack and Containers<a class="headerlink" href="#hpc-stack-and-containers" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="containers.html">HPC-stack</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hpcstack.html">HPC-stack</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="hpcstack.html#the-hpc-stack">The HPC-Stack</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hpcstack.html#hpc-stack-on-noaa-hpc">HPC-Stack on NOAA HPC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hpcstack.html#current-testing-of-hpc-stack">Current Testing of HPC-Stack</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hpcstack.html#new-platform-and-compiler-testing-of-hpc-stack">New Platform and Compiler Testing of HPC-Stack</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hpcstack.html#nceplibs-supported-platforms-under-construction">NCEPLIBS Supported Platforms [Under construction]</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hpcstack.html#required-hpc-stack-packages-for-ufs-wm">Required HPC-Stack packages for UFS WM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hpcstack.html#note-for-hpc-stack-build-on-orion-develop-branch">Note for hpc-stack build on Orion: develop branch</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="containers.html">Containers</a></li>
 </ul>
 </div>
 </div>
-<div class="section" id="ufs-srw-mrw-test-runs">
-<h2>UFS-SRW/MRW Test Runs<a class="headerlink" href="#ufs-srw-mrw-test-runs" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="ufs-srw-workflow">
+<h2>UFS SRW workflow<a class="headerlink" href="#ufs-srw-workflow" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="srwflow.html">UFS-SRW workflow application</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="srwflow.html#overview"><strong>Overview</strong></a></li>
-<li class="toctree-l2"><a class="reference internal" href="srwflow.html#prerequisites"><strong>Prerequisites</strong>:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="srwflow.html#running-the-workflow"><strong>Running the Workflow</strong>:</a></li>
+<li class="toctree-l1"><a class="reference internal" href="srwflow.html">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="srwflow.html#pre-processor-utilities-and-initial-conditions">Pre-processor Utilities and Initial Conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="srwflow.html#forecast-model">Forecast Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="srwflow.html#post-processor">Post-processor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="srwflow.html#visualization">Visualization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="srwflow.html#build-system-and-workflow">Build System and Workflow</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="mrwflow.html">UFS-MRW workflow application</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="srwflow.html#containerized-srw-application">Containerized SRW Application</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="srwflow.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="srwflow.html#container-type">Container Type</a></li>
+<li class="toctree-l2"><a class="reference internal" href="srwflow.html#sample-case-workflow">Sample Case Workflow</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="ufs-mrw-workflow">
+<h2>UFS MRW workflow<a class="headerlink" href="#ufs-mrw-workflow" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="mrwflow.html">UFS-MRW application workflow</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="mrwflow.html#overview"><strong>Overview</strong></a></li>
 <li class="toctree-l2"><a class="reference internal" href="mrwflow.html#prerequisites"><strong>Prerequisites</strong></a></li>
 <li class="toctree-l2"><a class="reference internal" href="mrwflow.html#obtain-the-docker-or-singularity-image"><strong>Obtain the Docker or Singularity Image</strong></a></li>
@@ -92,15 +116,16 @@ installation instructions, and cover topics relevant to users building and runni
   <ul>
 <li><a class="reference internal" href="#">EPIC-Documentation Test</a><ul>
 <li><a class="reference internal" href="#hpc-stack-and-containers">HPC-stack and Containers</a></li>
-<li><a class="reference internal" href="#ufs-srw-mrw-test-runs">UFS-SRW/MRW Test Runs</a></li>
+<li><a class="reference internal" href="#ufs-srw-workflow">UFS SRW workflow</a></li>
+<li><a class="reference internal" href="#ufs-mrw-workflow">UFS MRW workflow</a></li>
 <li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
 </ul>
 </li>
 </ul>
 
   <h4>Next topic</h4>
-  <p class="topless"><a href="containers.html"
-                        title="next chapter">Singularity and Docker Containers</a></p>
+  <p class="topless"><a href="hpcstack.html"
+                        title="next chapter">HPC-Stack Platforms and Compilers</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -129,7 +154,7 @@ installation instructions, and cover topics relevant to users building and runni
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="containers.html" title="Singularity and Docker Containers"
+          <a href="hpcstack.html" title="HPC-Stack Platforms and Compilers"
              >next</a> |</li>
         <li class="nav-item nav-item-0"><a href="#">EPIC-Documentation 0.0.1 documentation</a> &#187;</li> 
       </ul>

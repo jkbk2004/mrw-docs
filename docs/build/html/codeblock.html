@@ -1,0 +1,258 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Showing code examples &#8212; EPIC-Documentation 0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="index.html">EPIC-Documentation 0.0.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="showing-code-examples">
+<span id="code-examples"></span><h1>Showing code examples<a class="headerlink" href="#showing-code-examples" title="Permalink to this headline">¶</a></h1>
+<p id="index-0">Examples of Python source code or interactive sessions are represented using
+standard reST literal blocks.  They are started by a <code class="docutils literal notranslate"><span class="pre">::</span></code> at the end of the
+preceding paragraph and delimited by indentation.</p>
+<p>Representing an interactive session requires including the prompts and output
+along with the Python code.  No special markup is required for interactive
+sessions.  After the last line of input or output presented, there should not be
+an “unused” primary prompt; this is an example of what <em>not</em> to do:</p>
+<div class="highlight-rest notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; 1 + 1
+2
+&gt;&gt;&gt;
+</pre></div>
+</div>
+<p>Syntax highlighting is done with <a class="reference external" href="http://pygments.org">Pygments</a> (if it’s
+installed) and handled in a smart way:</p>
+<ul>
+<li><p>There is a “highlighting language” for each source file.  Per default, this is
+<code class="docutils literal notranslate"><span class="pre">'python'</span></code> as the majority of files will have to highlight Python snippets,
+but the doc-wide default can be set with the <a href="#id1"><span class="problematic" id="id2">:confval:`highlight_language`</span></a>
+config value.</p></li>
+<li><p>Within Python highlighting mode, interactive sessions are recognized
+automatically and highlighted appropriately.  Normal Python code is only
+highlighted if it is parseable (so you can use Python as the default, but
+interspersed snippets of shell commands or other code blocks will not be
+highlighted as Python).</p></li>
+<li><p>The highlighting language can be changed using the <code class="docutils literal notranslate"><span class="pre">highlight</span></code> directive,
+used as follows:</p>
+<div class="highlight-rest notranslate"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="ow">highlight</span><span class="p">::</span> c
+</pre></div>
+</div>
+<p>This language is used until the next <code class="docutils literal notranslate"><span class="pre">highlight</span></code> directive is encountered.</p>
+</li>
+<li><p>For documents that have to show snippets in different languages, there’s also
+a <code class="xref rst rst-dir docutils literal notranslate"><span class="pre">code-block</span></code> directive that is given the highlighting language
+directly:</p>
+<div class="highlight-rest notranslate"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="ow">code-block</span><span class="p">::</span> ruby
+
+   Some Ruby code.
+</pre></div>
+</div>
+<p>The directive’s alias name <code class="xref rst rst-dir docutils literal notranslate"><span class="pre">sourcecode</span></code> works as well.</p>
+</li>
+<li><p>The valid values for the highlighting language are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">none</span></code> (no highlighting)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">python</span></code> (the default when <a href="#id3"><span class="problematic" id="id4">:confval:`highlight_language`</span></a> isn’t set)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">guess</span></code> (let Pygments guess the lexer based on contents, only works with
+certain well-recognizable languages)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rest</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">c</span></code></p></li>
+<li><p>… and any other lexer name that Pygments supports.</p></li>
+</ul>
+</li>
+<li><p>If highlighting with the selected language fails, the block is not highlighted
+in any way.</p></li>
+</ul>
+<div class="section" id="line-numbers">
+<h2>Line numbers<a class="headerlink" href="#line-numbers" title="Permalink to this headline">¶</a></h2>
+<p>If installed, Pygments can generate line numbers for code blocks.  For
+automatically-highlighted blocks (those started by <code class="docutils literal notranslate"><span class="pre">::</span></code>), line numbers must be
+switched on in a <code class="xref rst rst-dir docutils literal notranslate"><span class="pre">highlight</span></code> directive, with the <code class="docutils literal notranslate"><span class="pre">linenothreshold</span></code>
+option:</p>
+<div class="highlight-rest notranslate"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="ow">highlight</span><span class="p">::</span> python
+   <span class="nc">:linenothreshold:</span> 5
+</pre></div>
+</div>
+<p>This will produce line numbers for all code blocks longer than five lines.</p>
+<p>For <code class="xref rst rst-dir docutils literal notranslate"><span class="pre">code-block</span></code> blocks, a <code class="docutils literal notranslate"><span class="pre">linenos</span></code> flag option can be given to switch
+on line numbers for the individual block:</p>
+<div class="highlight-rest notranslate"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="ow">code-block</span><span class="p">::</span> ruby
+   <span class="nc">:linenos:</span>
+
+   Some more Ruby code.
+</pre></div>
+</div>
+<p>Additionally, an <code class="docutils literal notranslate"><span class="pre">emphasize-lines</span></code> option can be given to have Pygments
+emphasize particular lines:</p>
+<div class="highlight-rest notranslate"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="ow">code-block</span><span class="p">::</span> python
+   <span class="nc">:emphasize-lines:</span> 3,5
+
+   def some_function():
+       interesting = False
+       print &#39;This line is highlighted.&#39;
+       print &#39;This one is not...&#39;
+       print &#39;...but this one is.&#39;
+</pre></div>
+</div>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Changed in version 1.1: </span><code class="docutils literal notranslate"><span class="pre">emphasize-lines</span></code> has been added.</p>
+</div>
+</div>
+<div class="section" id="includes">
+<h2>Includes<a class="headerlink" href="#includes" title="Permalink to this headline">¶</a></h2>
+<dl class="directive">
+<dt id="directive-literalinclude">
+<code class="sig-name descname">.. literalinclude::</code><code class="sig-prename descclassname"> filename</code><a class="headerlink" href="#directive-literalinclude" title="Permalink to this definition">¶</a></dt>
+<dd><p>Longer displays of verbatim text may be included by storing the example text in
+an external file containing only plain text.  The file may be included using the
+<code class="docutils literal notranslate"><span class="pre">literalinclude</span></code> directive. <a class="footnote-reference brackets" href="#id8" id="id5">1</a> For example, to include the Python source file
+<code class="file docutils literal notranslate"><span class="pre">example.py</span></code>, use:</p>
+<div class="highlight-rest notranslate"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="ow">literalinclude</span><span class="p">::</span> example.py
+</pre></div>
+</div>
+<p>The file name is usually relative to the current file’s path.  However, if it
+is absolute (starting with <code class="docutils literal notranslate"><span class="pre">/</span></code>), it is relative to the top source
+directory.</p>
+<p>Tabs in the input are expanded if you give a <code class="docutils literal notranslate"><span class="pre">tab-width</span></code> option with the
+desired tab width.</p>
+<p>The directive also supports the <code class="docutils literal notranslate"><span class="pre">linenos</span></code> flag option to switch on line
+numbers, the <code class="docutils literal notranslate"><span class="pre">emphasize-lines</span></code> option to emphasize particular lines, and
+a <code class="docutils literal notranslate"><span class="pre">language</span></code> option to select a language different from the current
+file’s standard language.  Example with options:</p>
+<div class="highlight-rest notranslate"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="ow">literalinclude</span><span class="p">::</span> example.rb
+   <span class="nc">:language:</span> ruby
+   <span class="nc">:emphasize-lines:</span> 12,15-18
+   <span class="nc">:linenos:</span>
+</pre></div>
+</div>
+<p>Include files are assumed to be encoded in the <a href="#id6"><span class="problematic" id="id7">:confval:`source_encoding`</span></a>.
+If the file has a different encoding, you can specify it with the
+<code class="docutils literal notranslate"><span class="pre">encoding</span></code> option:</p>
+<div class="highlight-rest notranslate"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="ow">literalinclude</span><span class="p">::</span> example.py
+   <span class="nc">:encoding:</span> latin-1
+</pre></div>
+</div>
+<p>The directive also supports including only parts of the file.  If it is a
+Python module, you can select a class, function or method to include using
+the <code class="docutils literal notranslate"><span class="pre">pyobject</span></code> option:</p>
+<div class="highlight-rest notranslate"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="ow">literalinclude</span><span class="p">::</span> example.py
+   <span class="nc">:pyobject:</span> Timer.start
+</pre></div>
+</div>
+<p>This would only include the code lines belonging to the <code class="docutils literal notranslate"><span class="pre">start()</span></code> method in
+the <code class="docutils literal notranslate"><span class="pre">Timer</span></code> class within the file.</p>
+<p>Alternately, you can specify exactly which lines to include by giving a
+<code class="docutils literal notranslate"><span class="pre">lines</span></code> option:</p>
+<div class="highlight-rest notranslate"><div class="highlight"><pre><span></span><span class="p">..</span> <span class="ow">literalinclude</span><span class="p">::</span> example.py
+   <span class="nc">:lines:</span> 1,3,5-10,20-
+</pre></div>
+</div>
+<p>This includes the lines 1, 3, 5 to 10 and lines 20 to the last line.</p>
+<p>Another way to control which part of the file is included is to use the
+<code class="docutils literal notranslate"><span class="pre">start-after</span></code> and <code class="docutils literal notranslate"><span class="pre">end-before</span></code> options (or only one of them).  If
+<code class="docutils literal notranslate"><span class="pre">start-after</span></code> is given as a string option, only lines that follow the first
+line containing that string are included.  If <code class="docutils literal notranslate"><span class="pre">end-before</span></code> is given as a
+string option, only lines that precede the first lines containing that string
+are included.</p>
+<p>You can prepend and/or append a line to the included code, using the
+<code class="docutils literal notranslate"><span class="pre">prepend</span></code> and <code class="docutils literal notranslate"><span class="pre">append</span></code> option, respectively.  This is useful e.g. for
+highlighting PHP code that doesn’t include the <code class="docutils literal notranslate"><span class="pre">&lt;?php</span></code>/<code class="docutils literal notranslate"><span class="pre">?&gt;</span></code> markers.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.4.3: </span>The <code class="docutils literal notranslate"><span class="pre">encoding</span></code> option.</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 0.6: </span>The <code class="docutils literal notranslate"><span class="pre">pyobject</span></code>, <code class="docutils literal notranslate"><span class="pre">lines</span></code>, <code class="docutils literal notranslate"><span class="pre">start-after</span></code> and <code class="docutils literal notranslate"><span class="pre">end-before</span></code> options,
+as well as support for absolute filenames.</p>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified added">New in version 1.0: </span>The <code class="docutils literal notranslate"><span class="pre">prepend</span></code> and <code class="docutils literal notranslate"><span class="pre">append</span></code> options, as well as <code class="docutils literal notranslate"><span class="pre">tab-width</span></code>.</p>
+</div>
+</dd></dl>
+
+<p class="rubric">Footnotes</p>
+<dl class="footnote brackets">
+<dt class="label" id="id8"><span class="brackets"><a class="fn-backref" href="#id5">1</a></span></dt>
+<dd><p>There is a standard <code class="docutils literal notranslate"><span class="pre">..</span> <span class="pre">include</span></code> directive, but it raises errors if the
+file is not found.  This one only emits a warning.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Showing code examples</a><ul>
+<li><a class="reference internal" href="#line-numbers">Line numbers</a></li>
+<li><a class="reference internal" href="#includes">Includes</a></li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/codeblock.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="index.html">EPIC-Documentation 0.0.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, ??? ???.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.4.0.
+    </div>
+  </body>
+</html>
