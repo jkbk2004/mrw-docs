@@ -1,5 +1,3 @@
-.. highlight:: rest
-
 .. _code-examples:
 
 Introduction
@@ -171,8 +169,53 @@ Preparing and Running the Workflow
      Save the file using ‘esc’, ‘:x’
      Repeat this process for the three remaining shell scripts
 
-* Now you are ready to run the SRW Application workflow. The workflow has been broken down into individual scripts. More information on what each of these scripts do, can be found `here <https://ufs-srweather-app.readthedocs.io/en/ufs-v1.0.1/SRWAppOverview.html#description-of-workflow-tasks>`__. Please run the following scripts in order.::
+* Now you are ready to run the SRW Application workflow. The workflow has been broken down into individual scripts. More information on what each of these scripts do, can be found `here <https://ufs-srweather-app.readthedocs.io/en/ufs-v1.0.1/SRWAppOverview.html#description-of-workflow-tasks>`__. Please run the following scripts in order.
+    * Fetch external data for initial conditions based on the case cycle (Estimated run time: < 1 min)::
     
-     ./run_get_ics.sh
-     Note: fetch external data for initial conditions based on the case cycle (Estimated run time: < 1 min). A successful execution of the script looks like this:
-           
+	./run_get_ics.sh
+	A successful execution of the script looks like this
+	....
+        Creating symlinks in the staging directory (extrn_mdl_staging_dir) to the
+        external model files on disk (extrn_mdl_fns_on_disk) in the source directory 
+        (extrn_mdl_source_dir):
+        extrn_mdl_source_dir = "/work/noaa/fv3-cam/UFS_SRW_app/v1p0/model_data/FV3GFS/2019061500"
+        extrn_mdl_fns_on_disk = ( "gfs.pgrb2.0p25.f000" )
+        extrn_mdl_staging_dir = "path-to-expt_dirs/2019061500/FV3GFS/for_ICS"
+        
+        ========================================================================
+        Successfully copied or linked to external model files on disk needed for
+        generating initial conditions and surface fields for the FV3 forecast!!!
+        
+        Exiting script:  "exregional_get_extrn_mdl_files.sh"
+        In directory:    "path-to-ufs-srweather-app/regional_workflow/scripts"
+        ========================================================================
+        
+        ========================================================================
+        Exiting script:  "JREGIONAL_GET_EXTRN_MDL_FILES"
+        In directory:    "path-to-ufs-srweather-app/regional_workflow/jobs"
+        ========================================================================
+	
+    * Fetch external data for lateral boundary conditions based on the case cycle. (Estimated run time: < 1 min)::
+    
+	./run_get_lbcs.sh
+	A successful execution of the script looks like this
+	....
+	Creating symlinks in the staging directory (extrn_mdl_staging_dir) to the
+	external model files on disk (extrn_mdl_fns_on_disk) in the source directory 
+	(extrn_mdl_source_dir):
+	extrn_mdl_source_dir = "/work/noaa/fv3-cam/UFS_SRW_app/v1p0/model_data/FV3GFS/2019061500"
+	extrn_mdl_fns_on_disk = ( "gfs.pgrb2.0p25.f006" "gfs.pgrb2.0p25.f012" "gfs.pgrb2.0p25.f018" "gfs.pgrb2.0p25.f024" "gfs.pgrb2.0p25.f030" "gfs.pgrb2.0p25.f036" "gfs.pgrb2.0p25.f042" "gfs.pgrb2.0p25.f048" )
+	extrn_mdl_staging_dir = "path-to-expt_dirs/test_GST/2019061500/FV3GFS/for_LBCS"
+	
+	========================================================================
+	Successfully copied or linked to external model files on disk needed for
+	generating lateral boundary conditions for the FV3 forecast!!!
+	
+	Exiting script:  "exregional_get_extrn_mdl_files.sh"
+	In directory:    "path-to-ufs-srweather-app/regional_workflow/scripts"
+	========================================================================
+	
+	========================================================================
+	Exiting script:  "JREGIONAL_GET_EXTRN_MDL_FILES"
+	In directory:    "path-to-ufs-srweather-app/regional_workflow/jobs"
+	========================================================================

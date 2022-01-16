@@ -106,13 +106,13 @@
 <p>Orion and Singularity Setup:</p>
 <ul>
 <li><p>Log into Orion using the command below with your username:</p>
-<div class="highlight-rest notranslate"><div class="highlight"><pre><span></span>ssh -x username@Orion-login.hpc.msstate.edu
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>ssh -x username@Orion-login.hpc.msstate.edu
 Note: username is first initial followed by last name, example: John Smith’s username is jsmith
 </pre></div>
 </div>
 </li>
 <li><p>Once on the machine, run the following commands below to download the SRW Application Singularity Image from Docker and convert it to a Singularity sandbox:</p>
-<div class="highlight-rest notranslate"><div class="highlight"><pre><span></span>cd /work/noaa/epic-ps/$USER
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>cd /work/noaa/epic-ps/$USER
 Note: if your $USER doesn’t exist, you may create it by replacing the ‘cd’ with ‘mkdir -p’ in the command above. $USER is the same username used in the previous step.
 module load singularity
 singularity pull ubuntu20.04-epic-srwapp.sif docker://noaaepic/ubuntu20.04-epic-srwapp:latest
@@ -125,12 +125,12 @@ singularity build --sandbox ubuntu20.04-epic-srwapp ubuntu20.04-epic-srwapp.sif
 </div>
 </li>
 <li><p>After the Singularity sandbox is complete, run the following commands to obtain a Slurm job allocation from Orion so that the SRW Application can run. Please note, depending on <em>Orion workload status</em>, allocating resources for this project can take minutes to an hour to complete. More on what the salloc command does is found <a class="reference external" href="https://slurm.schedmd.com/salloc.html">here</a>:</p>
-<div class="highlight-rest notranslate"><div class="highlight"><pre><span></span>salloc -N 1 -n 40 -A epic-ps -q batch -t 2:30:00 --partition=orion
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">salloc</span> <span class="o">-</span><span class="n">N</span> <span class="mi">1</span> <span class="o">-</span><span class="n">n</span> <span class="mi">40</span> <span class="o">-</span><span class="n">A</span> <span class="n">epic</span><span class="o">-</span><span class="n">ps</span> <span class="o">-</span><span class="n">q</span> <span class="n">batch</span> <span class="o">-</span><span class="n">t</span> <span class="mi">2</span><span class="p">:</span><span class="mi">30</span><span class="p">:</span><span class="mi">00</span> <span class="o">--</span><span class="n">partition</span><span class="o">=</span><span class="n">orion</span>
 </pre></div>
 </div>
 </li>
 <li><p>Run the command below to check if any resources have been assigned:</p>
-<div class="highlight-rest notranslate"><div class="highlight"><pre><span></span>squeue -u $USER
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>squeue -u $USER
 Note: if resources have been assigned, the output will look something like this:
       JOBID   PARTITION NAME USER   ST TIME    NODES NODELIST(REASON)
       3500248 orion bash     jsmith R  1:22:27 1     Orion-23-03
@@ -138,8 +138,8 @@ Note: if resources have been assigned, the output will look something like this:
 </div>
 </li>
 <li><p>Once resources have been allocated, ssh into the allocated compute node but note that the compute node has no access to the internet:</p>
-<div class="highlight-rest notranslate"><div class="highlight"><pre><span></span>ssh Orion-##-##
-Note: in the example above, the command would be: ssh Orion-23-03.
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ssh</span> <span class="n">Orion</span><span class="o">-</span><span class="c1">##-##</span>
+<span class="n">Note</span><span class="p">:</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">example</span> <span class="n">above</span><span class="p">,</span> <span class="n">the</span> <span class="n">command</span> <span class="n">would</span> <span class="n">be</span><span class="p">:</span> <span class="n">ssh</span> <span class="n">Orion</span><span class="o">-</span><span class="mi">23</span><span class="o">-</span><span class="mf">03.</span>
 </pre></div>
 </div>
 </li>
@@ -147,7 +147,7 @@ Note: in the example above, the command would be: ssh Orion-23-03.
 <p>Work Env and Conda Setup:</p>
 <ul>
 <li><p>After you are logged into the compute node, run the following commands to set up Singularity sandbox and work environments:</p>
-<div class="highlight-rest notranslate"><div class="highlight"><pre><span></span>module load singularity
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>module load singularity
 cd /work/noaa/epic-ps/$USER
 cp ~/.bashrc .
 singularity shell -e --bind /work:/work -w ./ubuntu20.04-epic-srwapp
@@ -158,9 +158,9 @@ Note: if you experience trouble sourcing variables feel free to use the bashrc s
 </div>
 </li>
 <li><p>Now that your Singularity and work environments are setup, let’s setup the Conda environment for Orion by running the following commands:</p>
-<div class="highlight-rest notranslate"><div class="highlight"><pre><span></span>source /ubuntu20.04-epic-srwapp/opt/ufs-srweather-app/env/wflow_orion_gnu.env
-source /ubuntu20.04-epic-srwapp/opt/ufs-srweather-app/env/build_orion_gnu.env
-cp -rf /ubuntu20.04-epic-srwapp/opt/bin /ubuntu20.04-epic-srwapp/opt/ufs-srweather-app
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">source</span> <span class="o">/</span><span class="n">ubuntu20</span><span class="o">.</span><span class="mi">04</span><span class="o">-</span><span class="n">epic</span><span class="o">-</span><span class="n">srwapp</span><span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">ufs</span><span class="o">-</span><span class="n">srweather</span><span class="o">-</span><span class="n">app</span><span class="o">/</span><span class="n">env</span><span class="o">/</span><span class="n">wflow_orion_gnu</span><span class="o">.</span><span class="n">env</span>
+<span class="n">source</span> <span class="o">/</span><span class="n">ubuntu20</span><span class="o">.</span><span class="mi">04</span><span class="o">-</span><span class="n">epic</span><span class="o">-</span><span class="n">srwapp</span><span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">ufs</span><span class="o">-</span><span class="n">srweather</span><span class="o">-</span><span class="n">app</span><span class="o">/</span><span class="n">env</span><span class="o">/</span><span class="n">build_orion_gnu</span><span class="o">.</span><span class="n">env</span>
+<span class="n">cp</span> <span class="o">-</span><span class="n">rf</span> <span class="o">/</span><span class="n">ubuntu20</span><span class="o">.</span><span class="mi">04</span><span class="o">-</span><span class="n">epic</span><span class="o">-</span><span class="n">srwapp</span><span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="nb">bin</span> <span class="o">/</span><span class="n">ubuntu20</span><span class="o">.</span><span class="mi">04</span><span class="o">-</span><span class="n">epic</span><span class="o">-</span><span class="n">srwapp</span><span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">ufs</span><span class="o">-</span><span class="n">srweather</span><span class="o">-</span><span class="n">app</span>
 </pre></div>
 </div>
 </li>
@@ -168,12 +168,12 @@ cp -rf /ubuntu20.04-epic-srwapp/opt/bin /ubuntu20.04-epic-srwapp/opt/ufs-srweath
 <p>Preparing and Running the Workflow</p>
 <ul>
 <li><p>Navigate to the ush directory, by running the command below:</p>
-<div class="highlight-rest notranslate"><div class="highlight"><pre><span></span>cd /ubuntu20.04-epic-srwapp/opt/ufs-srweather-app/regional_workflow/ush
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">/</span><span class="n">ubuntu20</span><span class="o">.</span><span class="mi">04</span><span class="o">-</span><span class="n">epic</span><span class="o">-</span><span class="n">srwapp</span><span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">ufs</span><span class="o">-</span><span class="n">srweather</span><span class="o">-</span><span class="n">app</span><span class="o">/</span><span class="n">regional_workflow</span><span class="o">/</span><span class="n">ush</span>
 </pre></div>
 </div>
 </li>
 <li><p>Verify if the config shell script is accurate by comparing it to <code class="docutils literal notranslate"><span class="pre">config.sh</span></code> found in the ufs-srweather-app/docs repo. Note that the experiment directory <code class="docutils literal notranslate"><span class="pre">EXPT_SUBDIR</span></code> variable in the config file is where the UFS Weather Model output files will be written to. The experiment directory default value is <code class="docutils literal notranslate"><span class="pre">community</span></code> and can be modified by the user:</p>
-<div class="highlight-rest notranslate"><div class="highlight"><pre><span></span>vi config.sh
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>vi config.sh
 Note: if config file is missing, simply copy the one from ufs-srweather-app/docs repo by doing the following:
       vi config.sh
       press ‘i’
@@ -186,7 +186,7 @@ Note: if config file is missing, simply copy the one from ufs-srweather-app/docs
 </div>
 </li>
 <li><p>To ensure the model can run on Orion, replace the ‘srun’ command with ‘mpirun -np 12’ command for the following scripts: exregional_make_sfc_climo.sh, exregional_make_ics.sh, exregional_make_lbcs.sh, and exregional_run_fcst.sh:</p>
-<div class="highlight-rest notranslate"><div class="highlight"><pre><span></span>vi /ubuntu20.04-epic-srwapp/opt/ufs-srweather-app/regional_workflow/scripts/exregional_make_sfc_climo.sh
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>vi /ubuntu20.04-epic-srwapp/opt/ufs-srweather-app/regional_workflow/scripts/exregional_make_sfc_climo.sh
 Search for ORION by doing: /ORION
 Enter interactive mode: ‘i’ and replace ARN var from ‘srun’ to ‘mpirun -np 12’
 Save the file using ‘esc’, ‘:x’
@@ -194,11 +194,63 @@ Repeat this process for the three remaining shell scripts
 </pre></div>
 </div>
 </li>
-<li><p>Now you are ready to run the SRW Application workflow. The workflow has been broken down into individual scripts. More information on what each of these scripts do, can be found <a class="reference external" href="https://ufs-srweather-app.readthedocs.io/en/ufs-v1.0.1/SRWAppOverview.html#description-of-workflow-tasks">here</a>. Please run the following scripts in order.:</p>
-<div class="highlight-rest notranslate"><div class="highlight"><pre><span></span>./run_get_ics.sh
-Note: fetch external data for initial conditions based on the case cycle (Estimated run time: &lt; 1 min). A successful execution of the script looks like this:
+<li><dl>
+<dt>Now you are ready to run the SRW Application workflow. The workflow has been broken down into individual scripts. More information on what each of these scripts do, can be found <a class="reference external" href="https://ufs-srweather-app.readthedocs.io/en/ufs-v1.0.1/SRWAppOverview.html#description-of-workflow-tasks">here</a>. Please run the following scripts in order.</dt><dd><ul>
+<li><p>Fetch external data for initial conditions based on the case cycle (Estimated run time: &lt; 1 min):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>./run_get_ics.sh
+A successful execution of the script looks like this
+....
+Creating symlinks in the staging directory (extrn_mdl_staging_dir) to the
+external model files on disk (extrn_mdl_fns_on_disk) in the source directory
+(extrn_mdl_source_dir):
+extrn_mdl_source_dir = &quot;/work/noaa/fv3-cam/UFS_SRW_app/v1p0/model_data/FV3GFS/2019061500&quot;
+extrn_mdl_fns_on_disk = ( &quot;gfs.pgrb2.0p25.f000&quot; )
+extrn_mdl_staging_dir = &quot;path-to-expt_dirs/2019061500/FV3GFS/for_ICS&quot;
+
+========================================================================
+Successfully copied or linked to external model files on disk needed for
+generating initial conditions and surface fields for the FV3 forecast!!!
+
+Exiting script:  &quot;exregional_get_extrn_mdl_files.sh&quot;
+In directory:    &quot;path-to-ufs-srweather-app/regional_workflow/scripts&quot;
+========================================================================
+
+========================================================================
+Exiting script:  &quot;JREGIONAL_GET_EXTRN_MDL_FILES&quot;
+In directory:    &quot;path-to-ufs-srweather-app/regional_workflow/jobs&quot;
+========================================================================
 </pre></div>
 </div>
+</li>
+<li><p>Fetch external data for lateral boundary conditions based on the case cycle. (Estimated run time: &lt; 1 min):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>./run_get_lbcs.sh
+A successful execution of the script looks like this
+....
+Creating symlinks in the staging directory (extrn_mdl_staging_dir) to the
+external model files on disk (extrn_mdl_fns_on_disk) in the source directory
+(extrn_mdl_source_dir):
+extrn_mdl_source_dir = &quot;/work/noaa/fv3-cam/UFS_SRW_app/v1p0/model_data/FV3GFS/2019061500&quot;
+extrn_mdl_fns_on_disk = ( &quot;gfs.pgrb2.0p25.f006&quot; &quot;gfs.pgrb2.0p25.f012&quot; &quot;gfs.pgrb2.0p25.f018&quot; &quot;gfs.pgrb2.0p25.f024&quot; &quot;gfs.pgrb2.0p25.f030&quot; &quot;gfs.pgrb2.0p25.f036&quot; &quot;gfs.pgrb2.0p25.f042&quot; &quot;gfs.pgrb2.0p25.f048&quot; )
+extrn_mdl_staging_dir = &quot;path-to-expt_dirs/test_GST/2019061500/FV3GFS/for_LBCS&quot;
+
+========================================================================
+Successfully copied or linked to external model files on disk needed for
+generating lateral boundary conditions for the FV3 forecast!!!
+
+Exiting script:  &quot;exregional_get_extrn_mdl_files.sh&quot;
+In directory:    &quot;path-to-ufs-srweather-app/regional_workflow/scripts&quot;
+========================================================================
+
+========================================================================
+Exiting script:  &quot;JREGIONAL_GET_EXTRN_MDL_FILES&quot;
+In directory:    &quot;path-to-ufs-srweather-app/regional_workflow/jobs&quot;
+========================================================================
+</pre></div>
+</div>
+</li>
+</ul>
+</dd>
+</dl>
 </li>
 </ul>
 </div>
