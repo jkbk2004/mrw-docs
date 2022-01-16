@@ -248,9 +248,177 @@ In directory:    &quot;path-to-ufs-srweather-app/regional_workflow/jobs&quot;
 </pre></div>
 </div>
 </li>
+<li><p>Pre-processing task to generate regional grid files (Estimated run time: &lt; 1 min).:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>./run_make_grid.sh
+A successful execution of the script looks like this
+....
+path-to-ufs-srweather-app/regional_workflow/ush/set_namelist.py -q -n /work/noaa/epic-ps/jongkim/temp/expt_dirs/test_GST/input.nml.base -u &#39;&#39;\&#39;&#39;namsfc&#39;\&#39;&#39;: {
+&#39;\&#39;&#39;FNALBC&#39;\&#39;&#39;: ../fix_lam/C403.snowfree_albedo.tileX.nc,
+&#39;\&#39;&#39;FNALBC2&#39;\&#39;&#39;: ../fix_lam/C403.facsf.tileX.nc,
+&#39;\&#39;&#39;FNTG3C&#39;\&#39;&#39;: ../fix_lam/C403.substrate_temperature.tileX.nc,
+&#39;\&#39;&#39;FNVEGC&#39;\&#39;&#39;: ../fix_lam/C403.vegetation_greenness.tileX.nc,
+&#39;\&#39;&#39;FNVETC&#39;\&#39;&#39;: ../fix_lam/C403.vegetation_type.tileX.nc,
+&#39;\&#39;&#39;FNSOTC&#39;\&#39;&#39;: ../fix_lam/C403.soil_type.tileX.nc,
+&#39;\&#39;&#39;FNVMNC&#39;\&#39;&#39;: ../fix_lam/C403.vegetation_greenness.tileX.nc,
+&#39;\&#39;&#39;FNVMXC&#39;\&#39;&#39;: ../fix_lam/C403.vegetation_greenness.tileX.nc,
+&#39;\&#39;&#39;FNSLPC&#39;\&#39;&#39;: ../fix_lam/C403.slope_type.tileX.nc,
+&#39;\&#39;&#39;FNABSC&#39;\&#39;&#39;: ../fix_lam/C403.maximum_snow_albedo.tileX.nc,
+}&#39; -o path-to-expt_dirs/test_GST/input.nml
+rm_vrfy path-to-expt_dirs/test_GST/input.nml.base
+
+========================================================================
+Grid files with various halo widths generated successfully!!!
+
+Exiting script:  &quot;exregional_make_grid.sh&quot;
+In directory:    &quot;path-to-ufs-srweather-app/regional_workflow/scripts&quot;
+========================================================================
+
+========================================================================
+Exiting script:  &quot;JREGIONAL_MAKE_GRID&quot;
+In directory:    &quot;path-to-ufs-srweather-app/regional_workflow/jobs&quot;
+========================================================================
+</pre></div>
+</div>
+</li>
+<li><p>Pre-processing task to generate regional grid files (Estimated run time: &lt; 1 min).:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>./run_make_grid.sh
+A successful execution of the script looks like this
+....
+Message from &quot;cd_vrfy&quot; function&#39;s &quot;cd&quot; operation:
+path-to-expt_dirs/test_GST
+
+========================================================================
+Orography files with various halo widths generated successfully!!!
+
+Exiting script:  &quot;exregional_make_orog.sh&quot;
+In directory:    &quot;path-to-ufs-srweather-app/regional_workflow/scripts&quot;
+========================================================================
+
+========================================================================
+Exiting script:  &quot;JREGIONAL_MAKE_OROG&quot;
+In directory:    &quot;path-to-ufs-srweather-app/regional_workflow/jobs&quot;
+========================================================================
+</pre></div>
+</div>
+</li>
+<li><p>Pre-processing task to generate surface climatology files (Estimated run time: &lt; 1 min).:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>./run_make_sfc_climo.sh
+A successful execution of the script looks like this
+....
+Message from &quot;cd_vrfy&quot; function&#39;s &quot;cd&quot; operation:
+path-to-expt_dirs/test_GST/sfc_climo/tmp
+
+========================================================================
+All surface climatology files generated successfully!!!
+
+Exiting script:  &quot;exregional_make_sfc_climo.sh&quot;
+In directory:    &quot;path-to-ufs-srweather-app/regional_workflow/scripts&quot;
+========================================================================
+
+========================================================================
+Exiting script:  &quot;JREGIONAL_MAKE_SFC_CLIMO&quot;
+In directory:    &quot;path-to-ufs-srweather-app/regional_workflow/jobs&quot;
+========================================================================
+</pre></div>
+</div>
+</li>
+<li><p>Generate lateral boundary conditions from external dataset (Estimated run time: &lt; 1 min).:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>./run_make_lbcs.sh
+A successful execution of the script looks like this
+....
+========================================================================
+Lateral boundary condition (LBC) files (in NetCDF format) generated suc-
+cessfully for all LBC update hours (except hour zero)!!!
+
+Exiting script:  &quot;exregional_make_lbcs.sh&quot;
+In directory:    &quot;path-to-ufs-srweather-app/regional_workflow/scripts&quot;
+========================================================================
+
+========================================================================
+Exiting script:  &quot;JREGIONAL_MAKE_LBCS&quot;
+In directory:    &quot;path-to-ufs-srweather-app/regional_workflow/jobs&quot;
+========================================================================
+</pre></div>
+</div>
+</li>
+<li><p>Run forecast (Estimated run time: 15-20 mins).:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>./run_fcst.sh
+A successful execution of the script looks like this
+....
+ENDING DATE-TIME    JAN 10,2022  09:56:22.811   10  MON   2459590
+PROGRAM nems      HAS ENDED.
+* . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * .
+  *****************RESOURCE STATISTICS*******************************
+  The total amount of wall time                        = 1664.915818
+  The total amount of time in user mode                = 3272.560867
+  The total amount of time in sys mode                 = 34.391806
+  The maximum resident set size (KB)                   = 511716
+  Number of page faults without I/O activity           = 726337
+  Number of page faults with I/O activity              = 1
+  Number of times filesystem performed INPUT           = 1088
+  Number of times filesystem performed OUTPUT          = 611360
+  Number of Voluntary Context Switches                 = 942
+  Number of InVoluntary Context Switches               = 2645
+  *****************END OF RESOURCE STATISTICS*************************
+
+
+  ========================================================================
+  FV3 forecast completed successfully!!!
+
+  Exiting script:  &quot;exregional_run_fcst.sh&quot;
+  In directory:    &quot;path-to-ufs-srweather-app/regional_workflow/scripts&quot;
+  ========================================================================
+
+  ========================================================================
+  Exiting script:  &quot;JREGIONAL_RUN_FCST&quot;
+  In directory:    &quot;path-to-ufs-srweather-app/regional_workflow/jobs&quot;
+  ========================================================================
+</pre></div>
+</div>
+</li>
+<li><p>Run the post-processing tool (UPP) (Estimated run time: ~5 mins).:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">run_post</span><span class="o">.</span><span class="n">sh</span>
+<span class="n">A</span> <span class="n">successful</span> <span class="n">execution</span> <span class="n">of</span> <span class="n">the</span> <span class="n">script</span> <span class="n">looks</span> <span class="n">like</span> <span class="n">this</span>
+<span class="o">....</span>
+<span class="o">========================================================================</span>
+<span class="n">Post</span><span class="o">-</span><span class="n">processing</span> <span class="k">for</span> <span class="n">forecast</span> <span class="n">hour</span> <span class="mi">000</span> <span class="n">completed</span> <span class="n">successfully</span><span class="o">.</span>
+
+<span class="n">Exiting</span> <span class="n">script</span><span class="p">:</span>  <span class="s2">&quot;exregional_run_post.sh&quot;</span>
+<span class="n">In</span> <span class="n">directory</span><span class="p">:</span>    <span class="s2">&quot;path-to-ufs-srweather-app/regional_workflow/scripts&quot;</span>
+<span class="o">========================================================================</span>
+
+<span class="o">========================================================================</span>
+<span class="n">Exiting</span> <span class="n">script</span><span class="p">:</span>  <span class="s2">&quot;JREGIONAL_RUN_POST&quot;</span>
+<span class="n">In</span> <span class="n">directory</span><span class="p">:</span>    <span class="s2">&quot;path-to-ufs-srweather-app/regional_workflow/jobs&quot;</span>
+<span class="o">========================================================================</span>
+</pre></div>
+</div>
+</li>
 </ul>
 </dd>
 </dl>
+</li>
+<li><p>The SRW Application creates {domain}.t{cyc}z.bgrd3df{fhr}.tmXX.grib2 files which can be found here path-to-expt_dirs/EXPT_SUBDIR/YYYYMMDDHH/postprd. Example output files are like this.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Orion-login-2[78] $ ls rrfs.*
+rrfs.t00z.natlevf000.tm00.grib2  rrfs.t00z.natlevf017.tm00.grib2  rrfs.t00z.prslevf009.tm00.grib2
+rrfs.t00z.natlevf001.tm00.grib2  rrfs.t00z.natlevf018.tm00.grib2  rrfs.t00z.prslevf010.tm00.grib2
+rrfs.t00z.natlevf002.tm00.grib2  rrfs.t00z.natlevf019.tm00.grib2  rrfs.t00z.prslevf011.tm00.grib2
+rrfs.t00z.natlevf003.tm00.grib2  rrfs.t00z.natlevf020.tm00.grib2  rrfs.t00z.prslevf012.tm00.grib2
+rrfs.t00z.natlevf004.tm00.grib2  rrfs.t00z.natlevf021.tm00.grib2  rrfs.t00z.prslevf013.tm00.grib2
+rrfs.t00z.natlevf005.tm00.grib2  rrfs.t00z.natlevf022.tm00.grib2  rrfs.t00z.prslevf014.tm00.grib2
+rrfs.t00z.natlevf006.tm00.grib2  rrfs.t00z.natlevf023.tm00.grib2  rrfs.t00z.prslevf015.tm00.grib2
+rrfs.t00z.natlevf007.tm00.grib2  rrfs.t00z.natlevf024.tm00.grib2  rrfs.t00z.prslevf016.tm00.grib2
+rrfs.t00z.natlevf008.tm00.grib2  rrfs.t00z.prslevf000.tm00.grib2  rrfs.t00z.prslevf017.tm00.grib2
+rrfs.t00z.natlevf009.tm00.grib2  rrfs.t00z.prslevf001.tm00.grib2  rrfs.t00z.prslevf018.tm00.grib2
+rrfs.t00z.natlevf010.tm00.grib2  rrfs.t00z.prslevf002.tm00.grib2  rrfs.t00z.prslevf019.tm00.grib2
+rrfs.t00z.natlevf011.tm00.grib2  rrfs.t00z.prslevf003.tm00.grib2  rrfs.t00z.prslevf020.tm00.grib2
+rrfs.t00z.natlevf012.tm00.grib2  rrfs.t00z.prslevf004.tm00.grib2  rrfs.t00z.prslevf021.tm00.grib2
+rrfs.t00z.natlevf013.tm00.grib2  rrfs.t00z.prslevf005.tm00.grib2  rrfs.t00z.prslevf022.tm00.grib2
+rrfs.t00z.natlevf014.tm00.grib2  rrfs.t00z.prslevf006.tm00.grib2  rrfs.t00z.prslevf023.tm00.grib2
+rrfs.t00z.natlevf015.tm00.grib2  rrfs.t00z.prslevf007.tm00.grib2  rrfs.t00z.prslevf024.tm00.grib2
+rrfs.t00z.natlevf016.tm00.grib2  rrfs.t00z.prslevf008.tm00.grib2
+</pre></div>
+</div>
 </li>
 </ul>
 </div>
