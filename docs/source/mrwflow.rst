@@ -1,137 +1,233 @@
-.. _mrwflow:
-
-======================
 MRW Container Workflow
-======================
+----------------------
 
----------------------------------
- **Overview**
----------------------------------
+Introduction
+------------
 
-As part of the Advance User Support Sprint 2 Planning deliverables, a minimalistic containerized version of the Medium Range Weather (MRW) Unified Forecasting System (UFS) application was requested. 
+The Medium Range Weather (MRW) Application is one of the many
+configurations of the Unified Forecasting System
+(`UFS <https://ufs-weather-model.readthedocs.io/en/ufs-v2.0.0/>`__),
+which is a community-based, coupled, comprehensive Earth modeling
+system. The UFS is an open-sourced project made available to the public
+and researchers, and is the future forecasting suite for NOAA’s
+operational numerical weather prediction applications.
 
-One of the requirements for this containerized version of the MRW forecasting application is that it should be able to run on a single node. To meet this requirement, we created a container using the UFS weather model configured for atmosphere only and the inline post-processor along with chgres_cubed and other pre-processing utilities. The MRW sample configuration uses low resolution (c48) and a reduced forecast period of three hours, instead of a more typical week-long forecast period.
+The UFS can be configured into `multiple
+applications <https://ufscommunity.org/science/aboutapps/>`__, and this
+document describes the MRW Application which targets predictions of
+atmospheric behavior out to two weeks. The MRW Application v1.1 includes
+a prognostic atmospheric model, pre- and post-processing tools, and a
+community workflow. This release is designed to be one that the
+community can run and improve on, and portable to a set of commonly used
+platforms.
 
-We anticipate that the primary users will be new users of the UFS weather model and UFS applications. As such, a lot of the ‘moving parts’ were captured in a shell script workflow so that a novice user can simply run a few commands. This script is run inside of either a Docker or Singularity container which has the MRW application pre-installed and was built using the HPC-Stack repository. The container itself is currently a proof of concept and significant work remains to ensure that the process of building containers that are offered to the community are fully in sync with the UFS software in use on the cloud and Tier-1 platforms.
+This document will expound on each piece of the MRW Application as well
+as discuss the workflow for the containerized MRW Application. For
+further reading, please check out the current MRW Application
+`document <https://ufs-mrweather-app.readthedocs.io/en/ufs-v1.1.0/>`__
+and `GitHub
+repository <https://github.com/ufs-community/ufs-mrweather-app>`__.
 
-This document will aid novice users in running the UFS MRW application with the intent of helping them become more familiar with the UFS and its applications. The document is broken into different sections so that it is easier for a user to understand what is required to run the MRW Container.  
+Pre-processor Utilities and Initial Conditions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
---------------------------------- 
- **Prerequisites**
----------------------------------
+The UFS MRW Application utilizes the GFS analyses for initialization and
+it can be in several formats such as the Gridded Binary v2
+(`GRIB2 <https://ufs-mrweather-app.readthedocs.io/en/ufs-v1.1.0/glossary.html#term-GRIB2>`__)
+format (in 0.50, or 1.0 degree grid spacing), or the NOAA Environmental
+Modeling System
+(`NEMS <https://ufs-mrweather-app.readthedocs.io/en/ufs-v1.1.0/glossary.html#term-NEMS>`__)
+Input/Output
+(`NEMSIO <https://ufs-mrweather-app.readthedocs.io/en/ufs-v1.1.0/glossary.html#term-NEMSIO>`__)
+formats. The initial conditions may be pre-staged on disk by the user or
+automatically downloaded by the workflow. The MRW Application is
+distributed with the chgres_cube pre-processing software, and converts
+the Global Forecast System (GFS) analyses to six tiles in Network Common
+Data Form
+(`NetCDF <https://ufs-mrweather-app.readthedocs.io/en/ufs-v1.1.0/glossary.html#term-NetCDF>`__)
+format, which is used as input data for the model. More information
+about chgres_cube can be found
+`here <https://ufs-utils.readthedocs.io/en/ufs-v1.1.0/>`__.
 
-There are a couple of packages, data sets, and a script one must have before running the MRW application container. Below is a list of these items:
+Forecast Model
+^^^^^^^^^^^^^^
 
-- Singularity and/or docker installed locally (**Singularity is recommended**)
+The Finite-Volume Cubed-Sphere
+(`FV3 <https://noaa-emc.github.io/FV3_Dycore_ufs-v2.0.0/html/index.html>`__)
+dynamic core is the prognostic atmospheric model in the UFS MRW
+Application. Currently, there are four supported model resolutions (13,
+25, 50, and 100-km) for the MRW with 64 vertical levels.
 
-- The MRW singularity or docker image (**Singularity is recommended**)
+The Common Community Physics Package
+(`CCPP <https://dtcenter.org/community-code/common-community-physics-package-ccpp>`__)
+are packages used by the model that describe small-scale physics like
+clouds and radiations. There are two sets currently being worked on: the
+Rapid Refresh Forecast System (RRFS) and the Global Forecast System
+(GFS). There are two variants of the GFS CCPP the user can choose
+(operational or experimental). The experimental suite (GFS v16)
+initializes and evolves sea surface temperatures differently than the
+current GFS CCPP suite (GFS v15). A scientific description of the CCPP
+parameterizations and suites can be found
+`here <https://dtcenter.ucar.edu/GMTB/v5.0.0/sci_doc/index.html>`__.
 
-- The sample test data (c48.cold.tar.gz)
+The UFS Weather Model ingests NetCDF files produced by chgres_cube and
+outputs files in NetCDF format on a Gaussian grid in the horizontal and
+model levels in the vertical.
 
-- Workflow script (workflow.sh)
+Post-processor
+^^^^^^^^^^^^^^
 
------------------------------------------- 
-**Obtain the Docker or Singularity Image**
-------------------------------------------
+The Unified Post Processor is part of the workflow for the MRW
+Application, and converts the NetCDF output to GRIB2 format. These newly
+converted files can be used to visualize, plot, and verify the weather
+model output. Learn more about UPP
+`here <https://upp.readthedocs.io/en/upp-v9.0.0/>`__.
 
-For the MRW application container, the Singularity image is built from docker, so you may choose whichever image you like. **However, it is recommended that you use the singularity container as it skips unnecessary steps and has been proven to work.**
+Visualization 
+^^^^^^^^^^^^^^
 
---------------------------------- 
-To obtain a Docker image
---------------------------------- 
+At the time of this release, there’s no support for model visualization.
+There are four basic NCAR Command Language (NCL) scripts to create basic
+visualization of model output to do a quick visual check to verify that
+the application is producing reasonable results.This scripts are
+available at this `FTP
+site <ftp://ftp.emc.ncep.noaa.gov/EIB/UFS/visualization_example/>`__.
 
-1. Obtain the latest MRW docker image from docker hub by doing the following:
+Build System and Workflow
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
-	1. ``docker pull dcvelobrew/docker-gnu-openmpi-dev-ufs``
+A CMake-based build system is used to build the required components for
+running the MRW Application, which include the pre and post processing
+software and UFS WM but not the
+`NCEPLIBS-external <https://ufs-srweather-app.readthedocs.io/en/ufs-v1.0.1/Glossary.html#term-nceplibs-external>`__
+and
+`NCEPLIBS <https://ufs-srweather-app.readthedocs.io/en/ufs-v1.0.1/Glossary.html#term-nceplibs>`__
+packages. Both NCEPLIBS packages are necessary to build the UFS WM and
+are preinstalled on some `NOAA HPC
+machines <https://github.com/ufs-community/ufs-srweather-app/wiki/Supported-Platforms-and-Compilers>`__.
+In the case of the containerized MRW Application, the model is already
+built.
 
-2. Convert the docker image to a singularity container by running the following command:
+The Common Infrastructure of Modeling the Earth
+(`CIME <http://esmci.github.io/cime/versions/ufs_release_v1.0/html/index.html>`__)
+Case Control System is used as the workflow manager for the MRW
+Application. CIME is able to build the model and the workflow but cannot
+build the NCEP libraries or run the pre and post processing tools. The
+containerized MRW Application doesn’t use CIME as the workflow manager
+for the model.
 
-	1. ``Singularity build epic-mrwapp.img docker://dcvelobrew/docker-gnu-openmpi-dev-ufs``
+Containerized MRW Application
+-----------------------------
 
- NOTE: the image is called epic-mrwapp.img
+Overview
+^^^^^^^^
 
---------------------------------- 
-To obtain the Singularity image
----------------------------------
+This containerized version of the MRW Application is intended for ease
+of portability of application to on-prem or cloud platforms, ensuring
+consistent and efficient builds, and faster development cycle. This
+would also allow users to run test cases on the model quickly and
+efficiently without worrying about the MRW Application failing.
 
-1. Run the command below to get the singularity image:
+A sample case was created for the containerized MRW Application and the
+instructions to run said case can be found in the following sections. It
+should be noted that refinement of the containerized MRW Application is
+anticipated as this project is still considered a proof of concept.
 
-	1. ``singularity pull library://dcvelobrew/default/mrwufs-src:latest``
+Container Type
+^^^^^^^^^^^^^^
 
- NOTE: the image is called mrwufs-src_latest.sif
+Both `Docker <https://www.docker.com/resources/what-container>`__ and
+`Singularity <https://sylabs.io/guides/3.5/user-guide/introduction.html>`__
+containers were tested for this project, and both offer advantages and
+disadvantages. Docker is well known throughout the software industry,
+which leads to more user exposure. But Docker also has security
+vulnerabilities if not used properly. Singularity is another container
+software company that creates containers designed to run on High
+Performance Computing (HPC) platforms with additional security measures.
+Since the containerized MRW Application is expected to run on NOAA HPC
+platforms, the Singularity container was chosen for this project.
 
---------------------------------------- 
-**Getting the Sample Data and Scripts**
---------------------------------------- 
+Sample Case Workflow
+^^^^^^^^^^^^^^^^^^^^
 
-- A small low resolution dataset was chosen for this workflow example and can be found here: `c48.cold.tar.gz - Google Drive <https://drive.google.com/file/d/1GxM21loaQETcYRMEyqyHFRx7UscoRtrF/view>`_
+The containerized MRW Application sample case workflow consists of a
+main workflow script and a regression test sample case. Minimal user
+terminal interaction is required. However, users should have a good
+understanding of basic Linux commands.
 
-- The Workflow is found here: `workflow.sh - Google Drive <https://drive.google.com/file/d/1dzRRkLha9M6Zq7augmdsgQywpjbVbfDz/view?usp=sharing>`_
+The MRW Application is built from the
+`HPC-Stack <https://github.com/NOAA-EMC/hpc-stack>`__ and is a
+simplified version of the MRW Application as it is configured for
+atmosphere only, uses the inline post-processor and chgres_cube, and
+doesn’t contain the CIME workflow. As a result, the current sample case
+can be run on Ubuntu 20.04 OS or NOAA HPC platforms. The sample case
+uses low resolution (c48) data and a forecasted period of three hours
+making it easy to run the entire workflow within an hour and the
+regression testing within two hours.
 
---------------------------------- 
-**Running the Workflow**
---------------------------------- 
+It should be noted again that the container itself and the accompanied
+workflow are currently in a proof of concept state, so changes to the
+container, workflow, and documentation are expected. Also, significant
+work remains to ensure the containers that are offered to the community
+are fully in sync with the UFS software used on the cloud and Tier-1
+platforms.
 
-1. Things to consider:
+Prerequisites
+             
 
-	1. The image name is different depending on which path you choose.
+There are a couple of packages, data sets, and a script one must have
+before running the containerized MRW Application. Below is a list of
+these items:
 
-		1. Docker image name: epic-mrwapp.img
+*  Singularity installed locally
 
-		2. Singularity image name: mrwufs-src_latest.sif
+*  The MRW Application Singularity Image
 
-	2. Make sure the c48.cold.tar.gz file, workflow.sh, and mrwufs-src_latest.sif/epic-mrwapp.img are all in the same directory.
+*  The sample workflow case data: `c48.cold.tar.gz <https://drive.google.com/file/d/1GxM21loaQETcYRMEyqyHFRx7UscoRtrF/view>`__
 
-	3. The workflow shell script has the Singularity image name hard coded in it.
+*  Workflow script: `workflow.sh <https://drive.google.com/file/d/1dzRRkLha9M6Zq7augmdsgQywpjbVbfDz/view?usp=sharing>`__
 
-2. Once you have verified the conditions above, run the command below:
+*  The sample regression test case data: control_48.tar.gz
 
-	1. ``./workflow.sh``
+Workflow
+        
 
-3. Results
+*  Download the MRW Application Singularity Image by doing the following::
 
-	1. This script will untar the c48 data and run a 3 hour forecast with the MRW app. It will also download a new GFS initial conditions dataset and run chgres and create another 3 hour forecast. 
+     singularity pull library://dcvelobrew/default/mrwufs-src:latest
 
-	2. It can take anywhere from 10 mins to up to an hour to complete.
+*  Place the c48.cold.tar.gz file, workflow.sh, and mrwufs-src_latest.sif all in the same directory. An example would be to place everything here: /home/<user_name>/mrw_workflow/
 
-	3. A successful output should look like this:
-	
-	4. .. image:: mrw-image.png
-		  :width: 750 px
+*  Once the files and Singularity image are in the same directory, run this command::
 
---------------------------------- 
-**Regression Testing**
---------------------------------- 
+     ./workflow.sh
 
-Another one of our Sprint Planning deliverables was to ensure the rt.sh can run inside the container. Given that the rt.sh is designed for running a large number of UFS global and limited-area configurations in a full environment, and the  simplified containerized version does not support the necessary requirements, only the c48 control case can be executed. Because of this, we simply captured the input datasets  and saved it as a tar file called control_48.
+*  Expected Results: this script will untar the c48 data and initiate the MRW Application to run a 3 hour forecast. It will also download a new GFS initial conditions dataset and run chgres_cube and create another 3 hour forecast. It can take anywhere from 10 mins to up to an hour to complete. A successful output should look like this:\ |image0|
 
-Running the regression test c48 is similar to what was done previously and below are the instructions.
+Regression Testing
+                  
 
-1. Procedure
+The current `UFS regression test <https://ufs-weather-model.readthedocs.io/en/latest/BuildingAndRunning.html?highlight=rt#using-the-regression-test-script>`__ process (rt.sh) is designed to run a large number of UFS global and limited-area configurations in a full environment. But since the containerized MRW Application is limited in resources, most regression test cases will not work, with the exception of the c48 control case. Therefore, the lone control case was captured and saved as the control_48 tarfile.
 
-	1. Place the control_48.tar.gz in the same directory as the mrwufs-src_latest.sif or epic-mrwapp.img file 
+Running the regression test c48 is similar to what was done previously.
+See instructions below.
 
-	2. Untar the control_48 file using this command:
+*  Place the control_48.tar.gz in the same directory as the mrwufs-src_latest.sif.
 
-		1. ``tar xzvf control_48.tar.gz``
+*  Untar the control_48 file using this command::
 
-	3. cd into the control_48 folder
+     tar xzvf control_48.tar.gz
 
-	4. Run the following command based on which container you are using.
- 
-		1. Singularity (**recommended**)
+*  cd into the control_48 folder and run the command below to start the regression test.::
 
-			1. ``singularity exec -B $PWD:$PWD ../mrwufs-src_latest.sif mpirun -n 8 /home/builder/ufs-weather-model/ufs_model``
+     singularity exec -B $PWD:$PWD ../mrwufs-src_latest.sif mpirun -n 8 /home/builder/ufs-weather-model/ufs_model
 
-		2. Docker
+*  A few things to note:
 
-			1. ``singularity exec -B $PWD:$PWD ../epic-mrwapp.img mpirun -n 8 /usr/local/bin/ufs_mode``
+   * The model runs on 8 nodes instead of 6
 
-2. Notes:
+   * The control_48 case can take up to two hours to complete.
 
-	1. The model runs on 8 nodes instead of 6
-
-	2. The UFS model is located in different locations depending on which image you are using
-
-	3. The control 48 model run took about 2.5 hours to complete on a personal virtual machine.
-	   
+.. |image0| image:: mrw-image.png
+   :width: 6.5in
+   :height: 4.88889in
