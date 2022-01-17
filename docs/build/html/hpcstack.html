@@ -46,88 +46,44 @@
 <h2>The HPC-Stack<a class="headerlink" href="#the-hpc-stack" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="definition">
 <h3>Definition<a class="headerlink" href="#definition" title="Permalink to this headline">¶</a></h3>
-<p>HPC-stack is a repository that provides a unified, shell script-based
-build system for building the software stack needed for the Unified
-Forecasting System (UFS) and applications. HPC-stack is part of the
-NCEPLIBS project and was written for the Joint Effort for Data
-assimilation Integration (JEDI) framework.</p>
+<p>HPC-stack is a repository that provides a unified, shell script-based build system for building the software stack needed for the Unified Forecasting System (UFS) and applications. HPC-stack is part of the NCEPLIBS project and was written for the Joint Effort for Data assimilation Integration (JEDI) framework.</p>
 </div>
 <div class="section" id="how-is-the-hpc-stack-built">
 <h3>How is the HPC-stack built?<a class="headerlink" href="#how-is-the-hpc-stack-built" title="Permalink to this headline">¶</a></h3>
-<p>To build the HPC-stack, all you would need is to have some prerequisites
-installed and to follow three steps.</p>
-<p>The prerequisites for building the HPC-stack are as follows: Lmod,
-CMake, make, wget, curl, and git.</p>
+<p>To build the HPC-stack, all you would need is to have some prerequisites installed and to follow three steps.</p>
+<p>The prerequisites for building the HPC-stack are as follows: Lmod, CMake, make, wget, curl, and git.</p>
 <p>Building the HPC-stack</p>
-<ol class="arabic simple">
+<ul class="simple">
 <li><p>Configure the build</p>
-<ol class="loweralpha simple">
-<li><dl class="simple">
-<dt>In this step, choose the compiler, mpi, and python you would like</dt><dd><p>to use, which is done by editing the config/config_custom.sh
-file.</p>
-</dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt>The next step is to choose the components of the stack, which is</dt><dd><p>done by editing the stack/stack_custom.yaml file.</p>
-</dd>
-</dl>
-</li>
-</ol>
+<ul>
+<li><p>In this step, choose the compiler, mpi, and python you would like to use, which is done by editing the config/config_custom.sh file.</p></li>
+<li><p>The next step is to choose the components of the stack, which is done by editing the stack/stack_custom.yaml file.</p></li>
+</ul>
 </li>
 <li><p>Setting up the compiler, MPI, Python, and Module System</p>
-<ol class="loweralpha simple" start="3">
-<li><dl class="simple">
-<dt>This step is only required if you are using LMod for managing the</dt><dd><p>software stack. If LMod is required, run the setup_modules.sh
-script.</p>
-</dd>
-</dl>
+<ul>
+<li><p>This step is only required if you are using LMod for managing the software stack. If LMod is required, run the setup_modules.sh script.</p></li>
+</ul>
 </li>
-</ol>
-</li>
-<li><p>Build the Software Stack</p>
-<ol class="loweralpha simple" start="4">
-<li><dl class="simple">
-<dt>Lastly, build the stack using the build_stack.sh script. The</dt><dd><p>configuration and yaml files used in Step 1 will be used here.</p>
-</dd>
-</dl>
-</li>
-</ol>
-</li>
-</ol>
-<p>More details on how to build the stack can be found here: <a class="reference external" href="https://github.com/NOAA-EMC/hpc-stack">GitHub -
-NOAA-EMC/hpc-stack: Create a software stack for
-HPC’s</a></p>
+</ul>
+<p>3* Build the Software Stack</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Lastly, build the stack using the build_stack.sh script. The configuration and yaml files used in Step 1 will be used here.</p></li>
+</ul>
+</div></blockquote>
+<p>More details on how to build the stack can be found here: <a class="reference external" href="https://github.com/NOAA-EMC/hpc-stack">GitHub - NOAA-EMC/hpc-stack: Create a software stack for HPC’s</a></p>
 </div>
 </div>
 <div class="section" id="hpc-stack-on-noaa-hpc">
 <h2>HPC-Stack on NOAA HPC<a class="headerlink" href="#hpc-stack-on-noaa-hpc" title="Permalink to this headline">¶</a></h2>
-<p>An operational and a test HPC-stack have been installed on some NOAA
-HPC. Both these stacks are updated a few times a month, with ESMF and
-UPP being the packages that update more frequently than others.</p>
-<p>The HPC-stack test versions are installed on Hera, Jet, Dell, WCOSS2,
-and Orion. The locations of these HPC-stack versions can be found here:
-<a class="reference external" href="https://github.com/NOAA-EMC/hpc-stack/wiki/HPC-stack-test-installations">HPC stack test installations · NOAA-EMC/hpc-stack Wiki ·
-GitHub</a>.</p>
-<p>The official HPC-stack versions are installed on Hera, Orion,
-WCOSS-Dell, Jet, Gaea, Cheyenne, WCOSS-2 (Acorn only). The locations of
-these official HPC-stack can be found here: <a class="reference external" href="https://github.com/NOAA-EMC/hpc-stack/wiki/Official-Installations">Official Installations ·
-NOAA-EMC/hpc-stack Wiki ·
-GitHub</a>.</p>
+<p>An operational and a test HPC-stack have been installed on some NOAA HPC. Both these stacks are updated a few times a month, with ESMF and UPP being the packages that update more frequently than others.</p>
+<p>The HPC-stack test versions are installed on Hera, Jet, Dell, WCOSS2, and Orion. The locations of these HPC-stack versions can be found here: <a class="reference external" href="https://github.com/NOAA-EMC/hpc-stack/wiki/HPC-stack-test-installations">HPC stack test installations · NOAA-EMC/hpc-stack Wiki · GitHub</a>.</p>
+<p>The official HPC-stack versions are installed on Hera, Orion, WCOSS-Dell, Jet, Gaea, Cheyenne, WCOSS-2 (Acorn only). The locations of these official HPC-stack can be found here: <a class="reference external" href="https://github.com/NOAA-EMC/hpc-stack/wiki/Official-Installations">Official Installations · NOAA-EMC/hpc-stack Wiki · GitHub</a>.</p>
 </div>
 <div class="section" id="current-testing-of-hpc-stack">
 <h2>Current Testing of HPC-Stack<a class="headerlink" href="#current-testing-of-hpc-stack" title="Permalink to this headline">¶</a></h2>
-<p>The HPC-stack has built-in GitHub Actions to verify if the HPC-stack
-will build successfully using different platforms and compilers. These
-GitHub actions are triggered every time there is a pull request. There
-are four different yaml scripts that test these configurations by
-building the HPC-stack and are found here: <a class="reference external" href="https://github.com/NOAA-EMC/hpc-stack/tree/develop/.github/workflows">hpc-stack/.github/workflows
-at develop · NOAA-EMC/hpc-stack ·
-GitHub</a>.
-An overview of the compiler, mpi, and python versions for the four yaml
-scripts can be found in the table below. Note that the
-test_download_only script only downloads the source code without
-installing it.</p>
+<p>The HPC-stack has built-in GitHub Actions to verify if the HPC-stack will build successfully using different platforms and compilers. These GitHub actions are triggered every time there is a pull request. There are four different yaml scripts that test these configurations by building the HPC-stack and are found here: <a class="reference external" href="https://github.com/NOAA-EMC/hpc-stack/tree/develop/.github/workflows">hpc-stack/.github/workflows at develop · NOAA-EMC/hpc-stack · GitHub</a>. An overview of the compiler, mpi, and python versions for the four yaml scripts can be found in the table below. Note that the test_download_only script only downloads the source code without installing it.</p>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 20%" />
@@ -203,25 +159,12 @@ ad_only</p></td>
 </tr>
 </tbody>
 </table>
-<p>Both the build_intel and build_ubuntu use the stack_custom.yaml to build
-the HPC-stack, while the build_macOS uses the stack_mac.yaml
-configuration. The packages that are installed for both of these yaml
-files can be found here:
-<a class="reference external" href="https://docs.google.com/spreadsheets/d/122bCY4Mh9LlR8ePTHOYfMI7xZWUtZaDbPH2krA-9Fn0/edit?usp=sharing">hpc-stack_yaml_pkgs</a></p>
-<p>The HPC-stack uses the Intel ‘classic’ compilers (ifort, icc, icpc),
-which are equivalent to the new set of paid compilers. These Intel
-‘classic’ compilers are still free and are a part of the Intel OneAPI
-name.</p>
+<p>Both the build_intel and build_ubuntu use the stack_custom.yaml to build the HPC-stack, while the build_macOS uses the stack_mac.yaml configuration. The packages that are installed for both of these yaml files can be found here: <a class="reference external" href="https://docs.google.com/spreadsheets/d/122bCY4Mh9LlR8ePTHOYfMI7xZWUtZaDbPH2krA-9Fn0/edit?usp=sharing">hpc-stack_yaml_pkgs</a></p>
+<p>The HPC-stack uses the Intel ‘classic’ compilers (ifort, icc, icpc), which are equivalent to the new set of paid compilers. These Intel ‘classic’ compilers are still free and are a part of the Intel OneAPI name.</p>
 </div>
 <div class="section" id="new-platform-and-compiler-testing-of-hpc-stack">
 <h2>New Platform and Compiler Testing of HPC-Stack<a class="headerlink" href="#new-platform-and-compiler-testing-of-hpc-stack" title="Permalink to this headline">¶</a></h2>
-<p>Understanding how the HPC-stack is built on different platforms and
-compilers is crucial to a repeatedly successful and consistent HPC-stack
-build. The table below was created to document the commonly used and/or
-new configurations of platforms, compilers, and library versions the
-HPC-stack builds upon. This table contains a ‘Building Notes’ column
-which will document how each configuration is built and allow for
-comparison and contrast between different configurations.</p>
+<p>Understanding how the HPC-stack is built on different platforms and compilers is crucial to a repeatedly successful and consistent HPC-stack build. The table below was created to document the commonly used and/or new configurations of platforms, compilers, and library versions the HPC-stack builds upon. This table contains a ‘Building Notes’ column which will document how each configuration is built and allow for comparison and contrast between different configurations.</p>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 17%" />
@@ -247,14 +190,20 @@ Notes</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td></td>
+<tr class="row-even"><td><div class="line-block">
+<div class="line"><br /></div>
+</div>
+</td>
 <td></td>
 <td></td>
 <td></td>
 <td></td>
 <td></td>
 </tr>
-<tr class="row-odd"><td></td>
+<tr class="row-odd"><td><div class="line-block">
+<div class="line"><br /></div>
+</div>
+</td>
 <td></td>
 <td></td>
 <td></td>
@@ -266,39 +215,26 @@ Notes</p></th>
 </div>
 <div class="section" id="nceplibs-supported-platforms-under-construction">
 <h2>NCEPLIBS Supported Platforms [Under construction]<a class="headerlink" href="#nceplibs-supported-platforms-under-construction" title="Permalink to this headline">¶</a></h2>
-<p>Tier 1 / (Support Level 1) Pre-configured</p>
-<p>Cheyenne</p>
-<p>Hera</p>
-<p>Jet</p>
-<p>Gaea</p>
-<p>All of these systems already have NCEP Libs and NCEP-external pre-built,
-which would suggest that the HPC Stack should run fine on these systems.</p>
-<p>Tier 2 / Support Level 2 | Configurable Platforms</p>
-<p>Stampede2</p>
-<p>Orion</p>
-<p>This tier would require the NCEP libs and NCEP-external packages to be
-built and once these packages are built, the UFS application should run
-successfully. Given that, the HPC-stack should be able to be built on
-these systems.</p>
-<p>Tier 3 / Support Level3 | Limited-Test Platforms</p>
-<p>MacOS Mojave</p>
-<p>MacOS Catalina</p>
-<p>RedHat/CentOS Linux 8.1</p>
-<p>Ubuntu Linux 18.04 LTS</p>
-<p>The systems listed above have all been tested and can build and run the
-MRW application. This would suggest that HPC Stack can be built on these
-systems as well.</p>
+<p>Tier 1 / (Support Level 1) Pre-configured:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Cheyenne</span><span class="p">,</span> <span class="n">Hera</span><span class="p">,</span> <span class="n">Jet</span><span class="p">,</span> <span class="n">Gaea</span>
+</pre></div>
+</div>
+<p>All of these systems already have NCEP Libs and NCEP-external pre-built, which would suggest that the HPC Stack should run fine on these systems.</p>
+<p>Tier 2 / Support Level 2 | Configurable Platforms:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Stampede2</span><span class="p">,</span> <span class="n">Orion</span>
+</pre></div>
+</div>
+<p>This tier would require the NCEP libs and NCEP-external packages to be built and once these packages are built, the UFS application should run successfully. Given that, the HPC-stack should be able to be built on these systems.</p>
+<p>Tier 3 / Support Level3 | Limited-Test Platforms:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">MacOS</span> <span class="n">Mojave</span><span class="p">,</span> <span class="n">MacOS</span> <span class="n">Catalina</span><span class="p">,</span> <span class="n">RedHat</span><span class="o">/</span><span class="n">CentOS</span> <span class="n">Linux</span> <span class="mf">8.1</span><span class="p">,</span> <span class="n">Ubuntu</span> <span class="n">Linux</span> <span class="mf">18.04</span> <span class="n">LTS</span>
+</pre></div>
+</div>
+<p>The systems listed above have all been tested and can build and run the MRW application. This would suggest that HPC Stack can be built on these systems as well.</p>
 </div>
 <div class="section" id="required-hpc-stack-packages-for-ufs-wm">
 <h2>Required HPC-Stack packages for UFS WM<a class="headerlink" href="#required-hpc-stack-packages-for-ufs-wm" title="Permalink to this headline">¶</a></h2>
-<p>The HPC-stack is a collection of various packages used to address the 8
-UFS Weather Model applications. As a result, there are some packages
-listed in the stack yaml files that aren’t required to build the MRW or
-SRW applications.</p>
-<p>Both the MRW and SRW applications use the UFS WM at it’s core with the
-UFS_UTILS repo. The required packages needed to build the MRW and SRW
-applications can be found in the below table as well as the
-<a class="reference external" href="https://docs.google.com/spreadsheets/d/122bCY4Mh9LlR8ePTHOYfMI7xZWUtZaDbPH2krA-9Fn0/edit?usp=sharing">hpc-stack_yaml_pkgs</a>:</p>
+<p>The HPC-stack is a collection of various packages used to address the 8 UFS Weather Model applications. As a result, there are some packages listed in the stack yaml files that aren’t required to build the MRW or SRW applications.</p>
+<p>Both the MRW and SRW applications use the UFS WM at it’s core with the UFS_UTILS repo. The required packages needed to build the MRW and SRW applications can be found in the below table as well as the <a class="reference external" href="https://docs.google.com/spreadsheets/d/122bCY4Mh9LlR8ePTHOYfMI7xZWUtZaDbPH2krA-9Fn0/edit?usp=sharing">hpc-stack_yaml_pkgs</a>:</p>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 50%" />
@@ -358,11 +294,10 @@ HDF5, (+parallel), zlib)</p></td>
 </div>
 <div class="section" id="note-for-hpc-stack-build-on-orion-develop-branch">
 <h2>Note for hpc-stack build on Orion: develop branch<a class="headerlink" href="#note-for-hpc-stack-build-on-orion-develop-branch" title="Permalink to this headline">¶</a></h2>
-<p>1. BUILD: NO or wget option of –no-check-certificate for madis pkg :
-due to expired data certification</p>
-<p>2. default miniconda3 installation option in stack_noaa.yaml: possible
-conflict of conda environment setting with user’s local conda
-configuration .condarc (restricted conda channels, etc.)</p>
+<ul class="simple">
+<li><p>BUILD: NO or wget option of –no-check-certificate for madis pkg: due to expired data certification</p></li>
+<li><p>default miniconda3 installation option in stack_noaa.yaml: possible conflict of conda environment setting with user’s local conda configuration .condarc (restricted conda channels, etc.)</p></li>
+</ul>
 </div>
 </div>
 

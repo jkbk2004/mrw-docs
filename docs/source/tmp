@@ -1,0 +1,100 @@
+      Tabulating mpp_clock statistics across      6 PEs...
+      
+                                            hits          tmin          tmax          tavg          tstd  tfrac grain pemin pemax
+      Total runtime                            1   1810.551122   1810.551129   1810.551125      0.000003  1.000     0     0     5
+      Initialization                           1      0.000000      0.000000      0.000000      0.000000  0.000     0     0     5
+      FV dy-core                              96   1625.697105   1627.181261   1626.345525      0.481404  0.898    11     0     5
+      FV subgrid_z                            48      2.780687      3.095576      2.957205      0.099777  0.002    11     0     5
+      FV Diag                                 48      0.801515      1.031477      0.890374      0.077319  0.000    11     0     5
+      GFS Step Setup                          96     12.575060     13.406329     13.111452      0.302518  0.007     1     0     5
+      GFS Radiation                           48      5.054733      5.772690      5.431244      0.263562  0.003     1     0     5
+      GFS Physics                             48      4.706983      5.128127      4.910280      0.139108  0.003     1     0     5
+      Dynamics get state                      48      2.543151      2.849283      2.671299      0.108357  0.001     1     0     5
+      Dynamics update state                   48     21.178364     22.646339     21.594512      0.558510  0.012     1     0     5
+      FV3 Dycore                              96   1631.851340   1633.636120   1632.695959      0.564533  0.902     1     0     5
+       MPP_STACK high water mark=           0
+       wrt grid comp destroy time=  0.44805073299994547     
+
+
+           ENDING DATE-TIME    DEC 20,2021  11:31:26.038  354  MON   2459569
+           PROGRAM nems      HAS ENDED.
+      * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . * . 
+      *****************RESOURCE STATISTICS*******************************
+      The total amount of wall time                        = 1811.384090
+      The total amount of time in user mode                = 23583.071477
+      The total amount of time in sys mode                 = 4.532416
+      The maximum resident set size (KB)                   = 567472
+      Number of page faults without I/O activity           = 968688
+      Number of page faults with I/O activity              = 0
+      Number of times filesystem performed INPUT           = 31048
+      Number of times filesystem performed OUTPUT          = 697680
+      Number of Voluntary Context Switches                 = 511709
+      Number of InVoluntary Context Switches               = 2447403
+      *****************END OF RESOURCE STATISTICS*************************
+      
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

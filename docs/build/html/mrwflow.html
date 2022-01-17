@@ -37,161 +37,245 @@
           <div class="body" role="main">
             
   <div class="section" id="mrw-container-workflow">
-<span id="mrwflow"></span><h1>MRW Container Workflow<a class="headerlink" href="#mrw-container-workflow" title="Permalink to this headline">¶</a></h1>
+<h1>MRW Container Workflow<a class="headerlink" href="#mrw-container-workflow" title="Permalink to this headline">¶</a></h1>
+</div>
+<div class="section" id="introduction">
+<h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
+<p>The Medium Range Weather (MRW) Application is one of the many
+configurations of the Unified Forecasting System
+(<a class="reference external" href="https://ufs-weather-model.readthedocs.io/en/ufs-v2.0.0/">UFS</a>),
+which is a community-based, coupled, comprehensive Earth modeling
+system. The UFS is an open-sourced project made available to the public
+and researchers, and is the future forecasting suite for NOAA’s
+operational numerical weather prediction applications.</p>
+<p>The UFS can be configured into <a class="reference external" href="https://ufscommunity.org/science/aboutapps/">multiple
+applications</a>, and this
+document describes the MRW Application which targets predictions of
+atmospheric behavior out to two weeks. The MRW Application v1.1 includes
+a prognostic atmospheric model, pre- and post-processing tools, and a
+community workflow. This release is designed to be one that the
+community can run and improve on, and portable to a set of commonly used
+platforms.</p>
+<p>This document will expound on each piece of the MRW Application as well
+as discuss the workflow for the containerized MRW Application. For
+further reading, please check out the current MRW Application
+<a class="reference external" href="https://ufs-mrweather-app.readthedocs.io/en/ufs-v1.1.0/">document</a>
+and <a class="reference external" href="https://github.com/ufs-community/ufs-mrweather-app">GitHub
+repository</a>.</p>
+<div class="section" id="pre-processor-utilities-and-initial-conditions">
+<h2>Pre-processor Utilities and Initial Conditions<a class="headerlink" href="#pre-processor-utilities-and-initial-conditions" title="Permalink to this headline">¶</a></h2>
+<p>The UFS MRW Application utilizes the GFS analyses for initialization and
+it can be in several formats such as the Gridded Binary v2
+(<a class="reference external" href="https://ufs-mrweather-app.readthedocs.io/en/ufs-v1.1.0/glossary.html#term-GRIB2">GRIB2</a>)
+format (in 0.50, or 1.0 degree grid spacing), or the NOAA Environmental
+Modeling System
+(<a class="reference external" href="https://ufs-mrweather-app.readthedocs.io/en/ufs-v1.1.0/glossary.html#term-NEMS">NEMS</a>)
+Input/Output
+(<a class="reference external" href="https://ufs-mrweather-app.readthedocs.io/en/ufs-v1.1.0/glossary.html#term-NEMSIO">NEMSIO</a>)
+formats. The initial conditions may be pre-staged on disk by the user or
+automatically downloaded by the workflow. The MRW Application is
+distributed with the chgres_cube pre-processing software, and converts
+the Global Forecast System (GFS) analyses to six tiles in Network Common
+Data Form
+(<a class="reference external" href="https://ufs-mrweather-app.readthedocs.io/en/ufs-v1.1.0/glossary.html#term-NetCDF">NetCDF</a>)
+format, which is used as input data for the model. More information
+about chgres_cube can be found
+<a class="reference external" href="https://ufs-utils.readthedocs.io/en/ufs-v1.1.0/">here</a>.</p>
+</div>
+<div class="section" id="forecast-model">
+<h2>Forecast Model<a class="headerlink" href="#forecast-model" title="Permalink to this headline">¶</a></h2>
+<p>The Finite-Volume Cubed-Sphere
+(<a class="reference external" href="https://noaa-emc.github.io/FV3_Dycore_ufs-v2.0.0/html/index.html">FV3</a>)
+dynamic core is the prognostic atmospheric model in the UFS MRW
+Application. Currently, there are four supported model resolutions (13,
+25, 50, and 100-km) for the MRW with 64 vertical levels.</p>
+<p>The Common Community Physics Package
+(<a class="reference external" href="https://dtcenter.org/community-code/common-community-physics-package-ccpp">CCPP</a>)
+are packages used by the model that describe small-scale physics like
+clouds and radiations. There are two sets currently being worked on: the
+Rapid Refresh Forecast System (RRFS) and the Global Forecast System
+(GFS). There are two variants of the GFS CCPP the user can choose
+(operational or experimental). The experimental suite (GFS v16)
+initializes and evolves sea surface temperatures differently than the
+current GFS CCPP suite (GFS v15). A scientific description of the CCPP
+parameterizations and suites can be found
+<a class="reference external" href="https://dtcenter.ucar.edu/GMTB/v5.0.0/sci_doc/index.html">here</a>.</p>
+<p>The UFS Weather Model ingests NetCDF files produced by chgres_cube and
+outputs files in NetCDF format on a Gaussian grid in the horizontal and
+model levels in the vertical.</p>
+</div>
+<div class="section" id="post-processor">
+<h2>Post-processor<a class="headerlink" href="#post-processor" title="Permalink to this headline">¶</a></h2>
+<p>The Unified Post Processor is part of the workflow for the MRW
+Application, and converts the NetCDF output to GRIB2 format. These newly
+converted files can be used to visualize, plot, and verify the weather
+model output. Learn more about UPP
+<a class="reference external" href="https://upp.readthedocs.io/en/upp-v9.0.0/">here</a>.</p>
+</div>
+<div class="section" id="visualization">
+<h2>Visualization<a class="headerlink" href="#visualization" title="Permalink to this headline">¶</a></h2>
+<p>At the time of this release, there’s no support for model visualization.
+There are four basic NCAR Command Language (NCL) scripts to create basic
+visualization of model output to do a quick visual check to verify that
+the application is producing reasonable results.This scripts are
+available at this <a class="reference external" href="ftp://ftp.emc.ncep.noaa.gov/EIB/UFS/visualization_example/">FTP
+site</a>.</p>
+</div>
+<div class="section" id="build-system-and-workflow">
+<h2>Build System and Workflow<a class="headerlink" href="#build-system-and-workflow" title="Permalink to this headline">¶</a></h2>
+<p>A CMake-based build system is used to build the required components for
+running the MRW Application, which include the pre and post processing
+software and UFS WM but not the
+<a class="reference external" href="https://ufs-srweather-app.readthedocs.io/en/ufs-v1.0.1/Glossary.html#term-nceplibs-external">NCEPLIBS-external</a>
+and
+<a class="reference external" href="https://ufs-srweather-app.readthedocs.io/en/ufs-v1.0.1/Glossary.html#term-nceplibs">NCEPLIBS</a>
+packages. Both NCEPLIBS packages are necessary to build the UFS WM and
+are preinstalled on some <a class="reference external" href="https://github.com/ufs-community/ufs-srweather-app/wiki/Supported-Platforms-and-Compilers">NOAA HPC
+machines</a>.
+In the case of the containerized MRW Application, the model is already
+built.</p>
+<p>The Common Infrastructure of Modeling the Earth
+(<a class="reference external" href="http://esmci.github.io/cime/versions/ufs_release_v1.0/html/index.html">CIME</a>)
+Case Control System is used as the workflow manager for the MRW
+Application. CIME is able to build the model and the workflow but cannot
+build the NCEP libraries or run the pre and post processing tools. The
+containerized MRW Application doesn’t use CIME as the workflow manager
+for the model.</p>
+</div>
+</div>
+<div class="section" id="containerized-mrw-application">
+<h1>Containerized MRW Application<a class="headerlink" href="#containerized-mrw-application" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="overview">
-<h2><strong>Overview</strong><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
-<p>As part of the Advance User Support Sprint 2 Planning deliverables, a minimalistic containerized version of the Medium Range Weather (MRW) Unified Forecasting System (UFS) application was requested.</p>
-<p>One of the requirements for this containerized version of the MRW forecasting application is that it should be able to run on a single node. To meet this requirement, we created a container using the UFS weather model configured for atmosphere only and the inline post-processor along with chgres_cubed and other pre-processing utilities. The MRW sample configuration uses low resolution (c48) and a reduced forecast period of three hours, instead of a more typical week-long forecast period.</p>
-<p>We anticipate that the primary users will be new users of the UFS weather model and UFS applications. As such, a lot of the ‘moving parts’ were captured in a shell script workflow so that a novice user can simply run a few commands. This script is run inside of either a Docker or Singularity container which has the MRW application pre-installed and was built using the HPC-Stack repository. The container itself is currently a proof of concept and significant work remains to ensure that the process of building containers that are offered to the community are fully in sync with the UFS software in use on the cloud and Tier-1 platforms.</p>
-<p>This document will aid novice users in running the UFS MRW application with the intent of helping them become more familiar with the UFS and its applications. The document is broken into different sections so that it is easier for a user to understand what is required to run the MRW Container.</p>
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>This containerized version of the MRW Application is intended for ease
+of portability of application to on-prem or cloud platforms, ensuring
+consistent and efficient builds, and faster development cycle. This
+would also allow users to run test cases on the model quickly and
+efficiently without worrying about the MRW Application failing.</p>
+<p>A sample case was created for the containerized MRW Application and the
+instructions to run said case can be found in the following sections. It
+should be noted that refinement of the containerized MRW Application is
+anticipated as this project is still considered a proof of concept.</p>
 </div>
-<div class="section" id="prerequisites">
-<h2><strong>Prerequisites</strong><a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h2>
-<p>There are a couple of packages, data sets, and a script one must have before running the MRW application container. Below is a list of these items:</p>
+<div class="section" id="container-type">
+<h2>Container Type<a class="headerlink" href="#container-type" title="Permalink to this headline">¶</a></h2>
+<p>Both <a class="reference external" href="https://www.docker.com/resources/what-container">Docker</a> and
+<a class="reference external" href="https://sylabs.io/guides/3.5/user-guide/introduction.html">Singularity</a>
+containers were tested for this project, and both offer advantages and
+disadvantages. Docker is well known throughout the software industry,
+which leads to more user exposure. But Docker also has security
+vulnerabilities if not used properly. Singularity is another container
+software company that creates containers designed to run on High
+Performance Computing (HPC) platforms with additional security measures.
+Since the containerized MRW Application is expected to run on NOAA HPC
+platforms, the Singularity container was chosen for this project.</p>
+</div>
+<div class="section" id="sample-case-workflow">
+<h2>Sample Case Workflow<a class="headerlink" href="#sample-case-workflow" title="Permalink to this headline">¶</a></h2>
+<p>The containerized MRW Application sample case workflow consists of a
+main workflow script and a regression test sample case. Minimal user
+terminal interaction is required. However, users should have a good
+understanding of basic Linux commands.</p>
+<p>The MRW Application is built from the
+<a class="reference external" href="https://github.com/NOAA-EMC/hpc-stack">HPC-Stack</a> and is a
+simplified version of the MRW Application as it is configured for
+atmosphere only, uses the inline post-processor and chgres_cube, and
+doesn’t contain the CIME workflow. As a result, the current sample case
+can be run on Ubuntu 20.04 OS or NOAA HPC platforms. The sample case
+uses low resolution (c48) data and a forecasted period of three hours
+making it easy to run the entire workflow within an hour and the
+regression testing within two hours.</p>
+<p>It should be noted again that the container itself and the accompanied
+workflow are currently in a proof of concept state, so changes to the
+container, workflow, and documentation are expected. Also, significant
+work remains to ensure the containers that are offered to the community
+are fully in sync with the UFS software used on the cloud and Tier-1
+platforms.</p>
+<p>Prerequisites</p>
+<p>There are a couple of packages, data sets, and a script one must have
+before running the containerized MRW Application. Below is a list of
+these items:</p>
 <ul class="simple">
-<li><p>Singularity and/or docker installed locally (<strong>Singularity is recommended</strong>)</p></li>
-<li><p>The MRW singularity or docker image (<strong>Singularity is recommended</strong>)</p></li>
-<li><p>The sample test data (c48.cold.tar.gz)</p></li>
-<li><p>Workflow script (workflow.sh)</p></li>
+<li><p>Singularity installed locally</p></li>
+<li><p>The MRW Application Singularity Image</p></li>
+<li><p>The sample workflow case data: <a class="reference external" href="https://drive.google.com/file/d/1GxM21loaQETcYRMEyqyHFRx7UscoRtrF/view">c48.cold.tar.gz</a></p></li>
+<li><p>Workflow script: <a class="reference external" href="https://drive.google.com/file/d/1dzRRkLha9M6Zq7augmdsgQywpjbVbfDz/view?usp=sharing">workflow.sh</a></p></li>
+<li><p>The sample regression test case data: control_48.tar.gz</p></li>
 </ul>
+<p>Workflow</p>
+<ul>
+<li><p>Download the MRW Application Singularity Image by doing the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">singularity</span> <span class="n">pull</span> <span class="n">library</span><span class="p">:</span><span class="o">//</span><span class="n">dcvelobrew</span><span class="o">/</span><span class="n">default</span><span class="o">/</span><span class="n">mrwufs</span><span class="o">-</span><span class="n">src</span><span class="p">:</span><span class="n">latest</span>
+</pre></div>
 </div>
-<div class="section" id="obtain-the-docker-or-singularity-image">
-<h2><strong>Obtain the Docker or Singularity Image</strong><a class="headerlink" href="#obtain-the-docker-or-singularity-image" title="Permalink to this headline">¶</a></h2>
-<p>For the MRW application container, the Singularity image is built from docker, so you may choose whichever image you like. <strong>However, it is recommended that you use the singularity container as it skips unnecessary steps and has been proven to work.</strong></p>
-</div>
-<div class="section" id="to-obtain-a-docker-image">
-<h2>To obtain a Docker image<a class="headerlink" href="#to-obtain-a-docker-image" title="Permalink to this headline">¶</a></h2>
-<ol class="arabic">
-<li><p>Obtain the latest MRW docker image from docker hub by doing the following:</p>
-<blockquote>
-<div><ol class="arabic simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">pull</span> <span class="pre">dcvelobrew/docker-gnu-openmpi-dev-ufs</span></code></p></li>
-</ol>
-</div></blockquote>
 </li>
-<li><p>Convert the docker image to a singularity container by running the following command:</p>
-<blockquote>
-<div><ol class="arabic simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">Singularity</span> <span class="pre">build</span> <span class="pre">epic-mrwapp.img</span> <span class="pre">docker://dcvelobrew/docker-gnu-openmpi-dev-ufs</span></code></p></li>
-</ol>
-</div></blockquote>
-</li>
-</ol>
-<blockquote>
-<div><p>NOTE: the image is called epic-mrwapp.img</p>
-</div></blockquote>
+<li><p>Place the c48.cold.tar.gz file, workflow.sh, and mrwufs-src_latest.sif all in the same directory. An example would be to place everything here: /home/&lt;user_name&gt;/mrw_workflow/</p></li>
+<li><p>Once the files and Singularity image are in the same directory, run this command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">./</span><span class="n">workflow</span><span class="o">.</span><span class="n">sh</span>
+</pre></div>
 </div>
-<div class="section" id="to-obtain-the-singularity-image">
-<h2>To obtain the Singularity image<a class="headerlink" href="#to-obtain-the-singularity-image" title="Permalink to this headline">¶</a></h2>
-<ol class="arabic">
-<li><p>Run the command below to get the singularity image:</p>
-<blockquote>
-<div><ol class="arabic simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">singularity</span> <span class="pre">pull</span> <span class="pre">library://dcvelobrew/default/mrwufs-src:latest</span></code></p></li>
-</ol>
-</div></blockquote>
 </li>
-</ol>
-<blockquote>
-<div><p>NOTE: the image is called mrwufs-src_latest.sif</p>
-</div></blockquote>
+<li><p>Expected Results: this script will untar the c48 data and initiate the MRW Application to run a 3 hour forecast. It will also download a new GFS initial conditions dataset and run chgres_cube and create another 3 hour forecast. It can take anywhere from 10 mins to up to an hour to complete. A successful output should look like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Tabulating</span> <span class="n">mpp_clock</span> <span class="n">statistics</span> <span class="n">across</span>      <span class="mi">6</span> <span class="n">PEs</span><span class="o">...</span>
+
+                                      <span class="n">hits</span>          <span class="n">tmin</span>          <span class="n">tmax</span>          <span class="n">tavg</span>          <span class="n">tstd</span>  <span class="n">tfrac</span> <span class="n">grain</span> <span class="n">pemin</span> <span class="n">pemax</span>
+<span class="n">Total</span> <span class="n">runtime</span>                            <span class="mi">1</span>   <span class="mf">1810.551122</span>   <span class="mf">1810.551129</span>   <span class="mf">1810.551125</span>      <span class="mf">0.000003</span>  <span class="mf">1.000</span>     <span class="mi">0</span>     <span class="mi">0</span>     <span class="mi">5</span>
+<span class="n">Initialization</span>                           <span class="mi">1</span>      <span class="mf">0.000000</span>      <span class="mf">0.000000</span>      <span class="mf">0.000000</span>      <span class="mf">0.000000</span>  <span class="mf">0.000</span>     <span class="mi">0</span>     <span class="mi">0</span>     <span class="mi">5</span>
+<span class="n">FV</span> <span class="n">dy</span><span class="o">-</span><span class="n">core</span>                              <span class="mi">96</span>   <span class="mf">1625.697105</span>   <span class="mf">1627.181261</span>   <span class="mf">1626.345525</span>      <span class="mf">0.481404</span>  <span class="mf">0.898</span>    <span class="mi">11</span>     <span class="mi">0</span>     <span class="mi">5</span>
+<span class="n">FV</span> <span class="n">subgrid_z</span>                            <span class="mi">48</span>      <span class="mf">2.780687</span>      <span class="mf">3.095576</span>      <span class="mf">2.957205</span>      <span class="mf">0.099777</span>  <span class="mf">0.002</span>    <span class="mi">11</span>     <span class="mi">0</span>     <span class="mi">5</span>
+<span class="n">FV</span> <span class="n">Diag</span>                                 <span class="mi">48</span>      <span class="mf">0.801515</span>      <span class="mf">1.031477</span>      <span class="mf">0.890374</span>      <span class="mf">0.077319</span>  <span class="mf">0.000</span>    <span class="mi">11</span>     <span class="mi">0</span>     <span class="mi">5</span>
+<span class="n">GFS</span> <span class="n">Step</span> <span class="n">Setup</span>                          <span class="mi">96</span>     <span class="mf">12.575060</span>     <span class="mf">13.406329</span>     <span class="mf">13.111452</span>      <span class="mf">0.302518</span>  <span class="mf">0.007</span>     <span class="mi">1</span>     <span class="mi">0</span>     <span class="mi">5</span>
+<span class="n">GFS</span> <span class="n">Radiation</span>                           <span class="mi">48</span>      <span class="mf">5.054733</span>      <span class="mf">5.772690</span>      <span class="mf">5.431244</span>      <span class="mf">0.263562</span>  <span class="mf">0.003</span>     <span class="mi">1</span>     <span class="mi">0</span>     <span class="mi">5</span>
+<span class="n">GFS</span> <span class="n">Physics</span>                             <span class="mi">48</span>      <span class="mf">4.706983</span>      <span class="mf">5.128127</span>      <span class="mf">4.910280</span>      <span class="mf">0.139108</span>  <span class="mf">0.003</span>     <span class="mi">1</span>     <span class="mi">0</span>     <span class="mi">5</span>
+<span class="n">Dynamics</span> <span class="n">get</span> <span class="n">state</span>                      <span class="mi">48</span>      <span class="mf">2.543151</span>      <span class="mf">2.849283</span>      <span class="mf">2.671299</span>      <span class="mf">0.108357</span>  <span class="mf">0.001</span>     <span class="mi">1</span>     <span class="mi">0</span>     <span class="mi">5</span>
+<span class="n">Dynamics</span> <span class="n">update</span> <span class="n">state</span>                   <span class="mi">48</span>     <span class="mf">21.178364</span>     <span class="mf">22.646339</span>     <span class="mf">21.594512</span>      <span class="mf">0.558510</span>  <span class="mf">0.012</span>     <span class="mi">1</span>     <span class="mi">0</span>     <span class="mi">5</span>
+<span class="n">FV3</span> <span class="n">Dycore</span>                              <span class="mi">96</span>   <span class="mf">1631.851340</span>   <span class="mf">1633.636120</span>   <span class="mf">1632.695959</span>      <span class="mf">0.564533</span>  <span class="mf">0.902</span>     <span class="mi">1</span>     <span class="mi">0</span>     <span class="mi">5</span>
+ <span class="n">MPP_STACK</span> <span class="n">high</span> <span class="n">water</span> <span class="n">mark</span><span class="o">=</span>           <span class="mi">0</span>
+ <span class="n">wrt</span> <span class="n">grid</span> <span class="n">comp</span> <span class="n">destroy</span> <span class="n">time</span><span class="o">=</span>  <span class="mf">0.44805073299994547</span>
+
+
+     <span class="n">ENDING</span> <span class="n">DATE</span><span class="o">-</span><span class="n">TIME</span>    <span class="n">DEC</span> <span class="mi">20</span><span class="p">,</span><span class="mi">2021</span>  <span class="mi">11</span><span class="p">:</span><span class="mi">31</span><span class="p">:</span><span class="mf">26.038</span>  <span class="mi">354</span>  <span class="n">MON</span>   <span class="mi">2459569</span>
+     <span class="n">PROGRAM</span> <span class="n">nems</span>      <span class="n">HAS</span> <span class="n">ENDED</span><span class="o">.</span>
+<span class="o">*</span> <span class="o">.</span> <span class="o">*</span> <span class="o">.</span> <span class="o">*</span> <span class="o">.</span> <span class="o">*</span> <span class="o">.</span> <span class="o">*</span> <span class="o">.</span> <span class="o">*</span> <span class="o">.</span> <span class="o">*</span> <span class="o">.</span> <span class="o">*</span> <span class="o">.</span> <span class="o">*</span> <span class="o">.</span> <span class="o">*</span> <span class="o">.</span> <span class="o">*</span> <span class="o">.</span> <span class="o">*</span> <span class="o">.</span> <span class="o">*</span> <span class="o">.</span> <span class="o">*</span> <span class="o">.</span> <span class="o">*</span> <span class="o">.</span> <span class="o">*</span> <span class="o">.</span> <span class="o">*</span> <span class="o">.</span> <span class="o">*</span> <span class="o">.</span> <span class="o">*</span> <span class="o">.</span> <span class="o">*</span> <span class="o">.</span>
+<span class="o">*****************</span><span class="n">RESOURCE</span> <span class="n">STATISTICS</span><span class="o">*******************************</span>
+<span class="n">The</span> <span class="n">total</span> <span class="n">amount</span> <span class="n">of</span> <span class="n">wall</span> <span class="n">time</span>                        <span class="o">=</span> <span class="mf">1811.384090</span>
+<span class="n">The</span> <span class="n">total</span> <span class="n">amount</span> <span class="n">of</span> <span class="n">time</span> <span class="ow">in</span> <span class="n">user</span> <span class="n">mode</span>                <span class="o">=</span> <span class="mf">23583.071477</span>
+<span class="n">The</span> <span class="n">total</span> <span class="n">amount</span> <span class="n">of</span> <span class="n">time</span> <span class="ow">in</span> <span class="n">sys</span> <span class="n">mode</span>                 <span class="o">=</span> <span class="mf">4.532416</span>
+<span class="n">The</span> <span class="n">maximum</span> <span class="n">resident</span> <span class="nb">set</span> <span class="n">size</span> <span class="p">(</span><span class="n">KB</span><span class="p">)</span>                   <span class="o">=</span> <span class="mi">567472</span>
+<span class="n">Number</span> <span class="n">of</span> <span class="n">page</span> <span class="n">faults</span> <span class="n">without</span> <span class="n">I</span><span class="o">/</span><span class="n">O</span> <span class="n">activity</span>           <span class="o">=</span> <span class="mi">968688</span>
+<span class="n">Number</span> <span class="n">of</span> <span class="n">page</span> <span class="n">faults</span> <span class="k">with</span> <span class="n">I</span><span class="o">/</span><span class="n">O</span> <span class="n">activity</span>              <span class="o">=</span> <span class="mi">0</span>
+<span class="n">Number</span> <span class="n">of</span> <span class="n">times</span> <span class="n">filesystem</span> <span class="n">performed</span> <span class="n">INPUT</span>           <span class="o">=</span> <span class="mi">31048</span>
+<span class="n">Number</span> <span class="n">of</span> <span class="n">times</span> <span class="n">filesystem</span> <span class="n">performed</span> <span class="n">OUTPUT</span>          <span class="o">=</span> <span class="mi">697680</span>
+<span class="n">Number</span> <span class="n">of</span> <span class="n">Voluntary</span> <span class="n">Context</span> <span class="n">Switches</span>                 <span class="o">=</span> <span class="mi">511709</span>
+<span class="n">Number</span> <span class="n">of</span> <span class="n">InVoluntary</span> <span class="n">Context</span> <span class="n">Switches</span>               <span class="o">=</span> <span class="mi">2447403</span>
+<span class="o">*****************</span><span class="n">END</span> <span class="n">OF</span> <span class="n">RESOURCE</span> <span class="n">STATISTICS</span><span class="o">*************************</span>
+</pre></div>
 </div>
-<div class="section" id="getting-the-sample-data-and-scripts">
-<h2><strong>Getting the Sample Data and Scripts</strong><a class="headerlink" href="#getting-the-sample-data-and-scripts" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li><p>A small low resolution dataset was chosen for this workflow example and can be found here: <a class="reference external" href="https://drive.google.com/file/d/1GxM21loaQETcYRMEyqyHFRx7UscoRtrF/view">c48.cold.tar.gz - Google Drive</a></p></li>
-<li><p>The Workflow is found here: <a class="reference external" href="https://drive.google.com/file/d/1dzRRkLha9M6Zq7augmdsgQywpjbVbfDz/view?usp=sharing">workflow.sh - Google Drive</a></p></li>
+</li>
 </ul>
-</div>
-<div class="section" id="running-the-workflow">
-<h2><strong>Running the Workflow</strong><a class="headerlink" href="#running-the-workflow" title="Permalink to this headline">¶</a></h2>
-<ol class="arabic">
-<li><p>Things to consider:</p>
-<blockquote>
-<div><ol class="arabic">
-<li><p>The image name is different depending on which path you choose.</p>
-<blockquote>
-<div><ol class="arabic simple">
-<li><p>Docker image name: epic-mrwapp.img</p></li>
-<li><p>Singularity image name: mrwufs-src_latest.sif</p></li>
-</ol>
-</div></blockquote>
-</li>
-<li><p>Make sure the c48.cold.tar.gz file, workflow.sh, and mrwufs-src_latest.sif/epic-mrwapp.img are all in the same directory.</p></li>
-<li><p>The workflow shell script has the Singularity image name hard coded in it.</p></li>
-</ol>
-</div></blockquote>
-</li>
-<li><p>Once you have verified the conditions above, run the command below:</p>
-<blockquote>
-<div><ol class="arabic simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">./workflow.sh</span></code></p></li>
-</ol>
-</div></blockquote>
-</li>
-<li><p>Results</p>
-<blockquote>
-<div><ol class="arabic">
-<li><p>This script will untar the c48 data and run a 3 hour forecast with the MRW app. It will also download a new GFS initial conditions dataset and run chgres and create another 3 hour forecast.</p></li>
-<li><p>It can take anywhere from 10 mins to up to an hour to complete.</p></li>
-<li><p>A successful output should look like this:</p></li>
-<li><a class="reference internal image-reference" href="_images/mrw-image.png"><img alt="_images/mrw-image.png" src="_images/mrw-image.png" style="width: 750px;" /></a>
-</li>
-</ol>
-</div></blockquote>
-</li>
-</ol>
-</div>
-<div class="section" id="regression-testing">
-<h2><strong>Regression Testing</strong><a class="headerlink" href="#regression-testing" title="Permalink to this headline">¶</a></h2>
-<p>Another one of our Sprint Planning deliverables was to ensure the rt.sh can run inside the container. Given that the rt.sh is designed for running a large number of UFS global and limited-area configurations in a full environment, and the  simplified containerized version does not support the necessary requirements, only the c48 control case can be executed. Because of this, we simply captured the input datasets  and saved it as a tar file called control_48.</p>
-<p>Running the regression test c48 is similar to what was done previously and below are the instructions.</p>
-<ol class="arabic">
-<li><p>Procedure</p>
-<blockquote>
-<div><ol class="arabic">
-<li><p>Place the control_48.tar.gz in the same directory as the mrwufs-src_latest.sif or epic-mrwapp.img file</p></li>
+<p>Regression Testing</p>
+<p>The current <a class="reference external" href="https://ufs-weather-model.readthedocs.io/en/latest/BuildingAndRunning.html?highlight=rt#using-the-regression-test-script">UFS regression test</a> process (rt.sh) is designed to run a large number of UFS global and limited-area configurations in a full environment. But since the containerized MRW Application is limited in resources, most regression test cases will not work, with the exception of the c48 control case. Therefore, the lone control case was captured and saved as the control_48 tarfile.</p>
+<p>Running the regression test c48 is similar to what was done previously.
+See instructions below.</p>
+<ul>
+<li><p>Place the control_48.tar.gz in the same directory as the mrwufs-src_latest.sif.</p></li>
 <li><p>Untar the control_48 file using this command:</p>
-<blockquote>
-<div><ol class="arabic simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">tar</span> <span class="pre">xzvf</span> <span class="pre">control_48.tar.gz</span></code></p></li>
-</ol>
-</div></blockquote>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tar</span> <span class="n">xzvf</span> <span class="n">control_48</span><span class="o">.</span><span class="n">tar</span><span class="o">.</span><span class="n">gz</span>
+</pre></div>
+</div>
 </li>
-<li><p>cd into the control_48 folder</p></li>
-<li><p>Run the following command based on which container you are using.</p>
-<blockquote>
-<div><ol class="arabic">
-<li><p>Singularity (<strong>recommended</strong>)</p>
-<blockquote>
-<div><ol class="arabic simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">singularity</span> <span class="pre">exec</span> <span class="pre">-B</span> <span class="pre">$PWD:$PWD</span> <span class="pre">../mrwufs-src_latest.sif</span> <span class="pre">mpirun</span> <span class="pre">-n</span> <span class="pre">8</span> <span class="pre">/home/builder/ufs-weather-model/ufs_model</span></code></p></li>
-</ol>
-</div></blockquote>
+<li><p>cd into the control_48 folder and run the command below to start the regression test.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>singularity exec -B $PWD:$PWD ../mrwufs-src_latest.sif mpirun -n 8 /home/builder/ufs-weather-model/ufs_model
+</pre></div>
+</div>
 </li>
-<li><p>Docker</p>
-<blockquote>
-<div><ol class="arabic simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">singularity</span> <span class="pre">exec</span> <span class="pre">-B</span> <span class="pre">$PWD:$PWD</span> <span class="pre">../epic-mrwapp.img</span> <span class="pre">mpirun</span> <span class="pre">-n</span> <span class="pre">8</span> <span class="pre">/usr/local/bin/ufs_mode</span></code></p></li>
-</ol>
-</div></blockquote>
-</li>
-</ol>
-</div></blockquote>
-</li>
-</ol>
-</div></blockquote>
-</li>
-<li><p>Notes:</p>
-<blockquote>
-<div><ol class="arabic simple">
+<li><p>A few things to note:</p>
+<ul class="simple">
 <li><p>The model runs on 8 nodes instead of 6</p></li>
-<li><p>The UFS model is located in different locations depending on which image you are using</p></li>
-<li><p>The control 48 model run took about 2.5 hours to complete on a personal virtual machine.</p></li>
-</ol>
-</div></blockquote>
+<li><p>The control_48 case can take up to two hours to complete.</p></li>
+</ul>
 </li>
-</ol>
+</ul>
 </div>
 </div>
 
@@ -203,15 +287,19 @@
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">MRW Container Workflow</a><ul>
-<li><a class="reference internal" href="#overview"><strong>Overview</strong></a></li>
-<li><a class="reference internal" href="#prerequisites"><strong>Prerequisites</strong></a></li>
-<li><a class="reference internal" href="#obtain-the-docker-or-singularity-image"><strong>Obtain the Docker or Singularity Image</strong></a></li>
-<li><a class="reference internal" href="#to-obtain-a-docker-image">To obtain a Docker image</a></li>
-<li><a class="reference internal" href="#to-obtain-the-singularity-image">To obtain the Singularity image</a></li>
-<li><a class="reference internal" href="#getting-the-sample-data-and-scripts"><strong>Getting the Sample Data and Scripts</strong></a></li>
-<li><a class="reference internal" href="#running-the-workflow"><strong>Running the Workflow</strong></a></li>
-<li><a class="reference internal" href="#regression-testing"><strong>Regression Testing</strong></a></li>
+<li><a class="reference internal" href="#">MRW Container Workflow</a></li>
+<li><a class="reference internal" href="#introduction">Introduction</a><ul>
+<li><a class="reference internal" href="#pre-processor-utilities-and-initial-conditions">Pre-processor Utilities and Initial Conditions</a></li>
+<li><a class="reference internal" href="#forecast-model">Forecast Model</a></li>
+<li><a class="reference internal" href="#post-processor">Post-processor</a></li>
+<li><a class="reference internal" href="#visualization">Visualization</a></li>
+<li><a class="reference internal" href="#build-system-and-workflow">Build System and Workflow</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#containerized-mrw-application">Containerized MRW Application</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#container-type">Container Type</a></li>
+<li><a class="reference internal" href="#sample-case-workflow">Sample Case Workflow</a></li>
 </ul>
 </li>
 </ul>
