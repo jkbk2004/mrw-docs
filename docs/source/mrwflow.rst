@@ -16,8 +16,7 @@ Set-up
 3. Build UFS model and global-workflow components::
 
       sh build_global-workflow.sh [-c]
-      (ONLY use the -c option to compile for coupled UFS; requires
-      different physics packages and APP argument when running
+      (ONLY use the -c option to compile for coupled UFS; requires different physics packages and APP argument when running
       setup_expt.py in step 4. )
 
 4.  A few things to note:
