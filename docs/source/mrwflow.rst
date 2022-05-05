@@ -52,9 +52,8 @@ Set-up
       
       rocotocheck -d /path/to/workflow/database/file -w /path/to/workflow/xml/file -c YYYYMMDDCCmm -t taskname
 
-
-  Helpful documentation:
-  https://github.com/NOAA-EMC/global-workflow/wiki/Run-Global-Workflow
+    Helpful documentation:
+    https://github.com/NOAA-EMC/global-workflow/wiki/Run-Global-Workflow
 
 
 
