@@ -20,10 +20,16 @@ Set-up
       (ONLY use the -c option to compile for coupled UFS; requires different physics packages and APP argument when running
       setup_expt.py in step 4. )
 
-4.  A few things to note:
+4. Create a COMROT and EXPDIR. The experiment and workflow set-up scripts in following steps will point to these paths. Initial conditions will also need to be placed in COMROT.
 
-   * The model runs on 8 nodes instead of 6
+5. Run experiment generator script::
 
-   * The control_48 case can take up to two hours to complete.
+      cd ufs-mrweather-app/global-workflow/ush/rocoto
+      ./setup_expt.py forecast-only --pslot $EXP_NAME --idate
+      2020010100 --edate 2020010118 --resdet 384 --gfs_cyc 4 --comrot
+      $PATH_TO_YOUR_COMROT_DIR --expdir $PATH_TO_YOUR_EXPDIR
+
+  (example with COMROT and EXPDIR paths)
+
 
 
