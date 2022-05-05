@@ -29,7 +29,7 @@ Set-up
       2020010100 --edate 2020010118 --resdet 384 --gfs_cyc 4 --comrot
       $PATH_TO_YOUR_COMROT_DIR --expdir $PATH_TO_YOUR_EXPDIR
 
-(example with COMROT and EXPDIR paths)::
+      (example with COMROT and EXPDIR paths)::
 
       ./setup_expt.py forecast-only --pslot test --idate 2020010100 --edate 2020010118 --resdet 384 --gfs_cyc 4 --comrot /work/noaa/marine/Cameron.Book/ufs/COMROT --expdir /work/noaa/marine/Cameron.Book/ufs/EXPDIR
 
