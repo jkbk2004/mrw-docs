@@ -39,5 +39,23 @@ Set-up
 
 8. Run ./setup_workflow_fcstonly.py --expdir $EXPDIR/$PSLOT
 
+   This will generate crontab and xml files for the experiment in $EXPDIR/$PSLOT.
+
+9.  Submit job through crontab by copying entry in $PSLOT.crontab into crontab via crontab -e.
+
+10. Monitor status of workflow using rocotostat::
+      
+      rocotostat -d /path/to/workflow/database/file -w /path/to/workflow/xml/file [-c YYYYMMDDCCmm,[YYYYMMDDCCmm,...]] [-t taskname,[taskname,...]] [-s] [-T]
+      e.g.: rocotostat -d $PSLOT.db -w $PSLOT.xml
+
+11. Check status of specific task/job::
+      
+      rocotocheck -d /path/to/workflow/database/file -w /path/to/workflow/xml/file -c YYYYMMDDCCmm -t taskname
+
+
+Helpful documentation:
+<https://github.com/NOAA-EMC/global-workflow/wiki/Run-Global-Workflow>
+
+
 
 
