@@ -1,7 +1,8 @@
 Using UFS Medium-Range Weather Application with Global Workflow
----------------------------------------------------------------
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 Set-up
+^^^^^^
 
 1. Clone repository and checkout global workflow::
 
