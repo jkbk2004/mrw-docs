@@ -54,7 +54,7 @@ Set-up
 
 
 Helpful documentation:
-<https://github.com/NOAA-EMC/global-workflow/wiki/Run-Global-Workflow>
+https://github.com/NOAA-EMC/global-workflow/wiki/Run-Global-Workflow
 
 
 
