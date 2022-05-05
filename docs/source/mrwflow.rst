@@ -25,14 +25,19 @@ Set-up
 5. Run experiment generator script::
 
       cd ufs-mrweather-app/global-workflow/ush/rocoto
-      ./setup_expt.py forecast-only --pslot $EXP_NAME --idate
-      2020010100 --edate 2020010118 --resdet 384 --gfs_cyc 4 --comrot
-      $PATH_TO_YOUR_COMROT_DIR --expdir $PATH_TO_YOUR_EXPDIR
+      ./setup_expt.py forecast-only --pslot $EXP_NAME --idate 2020010100 --edate 2020010118 --resdet 384 --gfs_cyc 4 --comrot $PATH_TO_YOUR_COMROT_DIR --expdir $PATH_TO_YOUR_EXPDIR
 
       (example with COMROT and EXPDIR paths)::
 
       ./setup_expt.py forecast-only --pslot test --idate 2020010100 --edate 2020010118 --resdet 384 --gfs_cyc 4 --comrot /work/noaa/marine/Cameron.Book/ufs/COMROT --expdir /work/noaa/marine/Cameron.Book/ufs/EXPDIR
 
+6. Copy IC files into COMROT/$PSLOT. Directory name should be like::
+     
+      gfs.20220101, with structure: gfs.$YYYYMMDD/CC/atmos. INPUT folder within …/atmos/ contains sfc files needed for GFS ATM to run.
+
+7. Edit config.base in $EXPDIR/$PSLOT (ACCOUNT, HOMEDIR, STMP/PTMP, HPSSARCH)
+
+8. Run ./setup_workflow_fcstonly.py --expdir $EXPDIR/$PSLOT
 
 
 
